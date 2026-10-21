@@ -3,8 +3,7 @@ import { User, Download, CheckCircle2 } from 'lucide-react'
 import { PERSONAL } from '../data/portfolio'
 
 const highlights = [
-  'Mahasiswa aktif S1 Sains Data IPK 3.69',
-  'Lulus program D3 Teknik Komputer',
+  'Mahasiswa lulusan S1 Sains Data IPK 3.36',
   'Pengalaman FullStack Data Analysis Bootcamp (2 bulan)',
   'Memahami SQL, Python, BigQuery, Looker Studio',
   'Pengalaman kepemimpinan organisasi mahasiswa',

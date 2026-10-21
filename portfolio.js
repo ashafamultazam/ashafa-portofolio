@@ -1,23 +1,22 @@
 // ─── Data Portfolio Haris Arief Kamis ──────────────────────────
 
 export const PERSONAL = {
-  name: 'Haris Arief Kamis',
+  name: 'Ashafa Multazam',
   title: 'Data Analyst',
   tagline: 'Mengubah data menjadi keputusan bisnis yang bermakna',
-  location: 'Bogor, Jawa Barat, Indonesia',
-  email: 'harisariefkamis16@gmail.com',
-  phone: '+6285282436796',
-  linkedin: 'https://linkedin.com/in/harisariefkamis',
-  github: 'https://github.com/harisariefkamis',
-  bio: `Lulusan program komputer profesional Diploma (D1) Teknik Komputer dan mahasiswa semester 5 
-        Universitas Insan Cita Indonesia (UICI) jurusan Sains Data dengan IPK 3.69. Memiliki passion 
+  location: 'Bandung, Jawa Barat, Indonesia',
+  email: 'multazam.ashafa@gmail.com',
+  phone: '+6283130691888',
+  linkedin: 'https://www.linkedin.com/in/ashafamultazam',
+  github: 'https://github.com/ashafamultazam',
+  bio: `Lulusan Universitas Koperasi Indonesia jurusan Sains Data dengan IPK 3.36. Memiliki passion 
         di bidang data analysis dan pengalaman mengikuti FullStack Intensive Bootcamp Data Analysis 
         dari platform MySkill selama 2 bulan. Mampu problem solving yang baik dan bekerja secara 
         mandiri maupun dalam tim, berminat berkontribusi dalam proyek-proyek yang menantang.`,
 }
 
 export const STATS = [
-  { label: 'IPK Saat Ini', value: 3.69, suffix: '', prefix: '', decimals: 2 },
+  { label: 'IPK Saat Ini', value: 3.36, suffix: '', prefix: '', decimals: 2 },
   { label: 'Sertifikasi', value: 12, suffix: '+', prefix: '' },
   { label: 'Jam Bootcamp', value: 200, suffix: '+', prefix: '' },
   { label: 'Proyek Selesai', value: 8, suffix: '+', prefix: '' },
@@ -54,7 +53,7 @@ export const SKILLS = [
       { name: 'Google Looker Studio', level: 80 },
       { name: 'Data Visualization', level: 78 },
       { name: 'Microsoft Excel', level: 85 },
-      { name: 'Power Point', level: 80 },
+      { name: 'Power BI', level: 80 },
     ]
   },
   {
@@ -73,11 +72,11 @@ export const SKILLS = [
 export const EDUCATION = [
   {
     degree: 'S1 Sains Data',
-    institution: 'Universitas Insan Cita Indonesia (UICI)',
-    location: 'Jakarta Selatan',
-    period: 'April 2024 – 2027',
-    gpa: '3.69',
-    status: 'Aktif',
+    institution: 'Universitas Koperasi Indonesia (IKOPIN)',
+    location: 'Sumedang',
+    period: 'September 2022 – 2026',
+    gpa: '3.36',
+    status: 'Lulus',
     icon: '🎓',
     description: 'Mahasiswa aktif semester 5, fokus pada data science, machine learning, dan analisis data.',
   },
