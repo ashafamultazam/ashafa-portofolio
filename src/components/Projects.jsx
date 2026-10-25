@@ -72,7 +72,7 @@ export default function Projects() {
         {/* CTA */}
         <div className="text-center mt-10" data-aos="fade-up">
           <a
-            href={`https://github.com/harisariefkamis`}
+            href={`https://github.com/ashafamultazam`}
             target="_blank"
             rel="noreferrer"
             className="btn-outline inline-flex"

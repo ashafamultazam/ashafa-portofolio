@@ -138,9 +138,9 @@ export default function Hero() {
                 <span className="text-slate-500">// </span>Hello, I am
               </p>
               <h1 className="font-display font-800 text-5xl lg:text-6xl xl:text-7xl leading-tight text-slate-50">
-                Haris Arief
+                Ashafa Multazam
                 <br />
-                <span className="text-teal-400">Kamis</span>
+                <span className="text-teal-400">Azam</span>
               </h1>
             </motion.div>
 
@@ -242,7 +242,7 @@ export default function Hero() {
               {/* Terminal content */}
               <div className="font-mono text-sm space-y-1.5 text-slate-400 mb-6">
                 <p><span className="text-teal-500">const</span> analyst = {'{'}</p>
-                <p className="pl-4"><span className="text-amber-400">name</span>: <span className="text-green-400">"Haris Arief Kamis"</span>,</p>
+                <p className="pl-4"><span className="text-amber-400">name</span>: <span className="text-green-400">"Ashafa Multazam"</span>,</p>
                 <p className="pl-4"><span className="text-amber-400">role</span>: <span className="text-green-400">"Data Analyst"</span>,</p>
                 <p className="pl-4"><span className="text-amber-400">stack</span>: [<span className="text-green-400">"SQL"</span>, <span className="text-green-400">"Python"</span>, <span className="text-green-400">"BigQuery"</span>],</p>
                 <p className="pl-4"><span className="text-amber-400">status</span>: <span className="text-teal-400">available</span>,</p>

@@ -41,10 +41,10 @@ export default function Contact() {
 
   const contactItems = [
     { icon: Mail, label: 'Email', value: PERSONAL.email, href: `mailto:${PERSONAL.email}`, color: 'teal' },
-    { icon: Phone, label: 'WhatsApp', value: PERSONAL.phone, href: `https://wa.me/6285282436796`, color: 'teal' },
+    { icon: Phone, label: 'WhatsApp', value: PERSONAL.phone, href: `https://wa.me/6283130691888`, color: 'teal' },
     { icon: MapPin, label: 'Lokasi', value: PERSONAL.location, href: null, color: 'amber' },
-    { icon: Linkedin, label: 'LinkedIn', value: 'harisariefkamis', href: PERSONAL.linkedin, color: 'teal' },
-    { icon: Github, label: 'GitHub', value: 'harisariefkamis', href: PERSONAL.github, color: 'amber' },
+    { icon: Linkedin, label: 'LinkedIn', value: 'Ashafamultazam', href: PERSONAL.linkedin, color: 'teal' },
+    { icon: Github, label: 'GitHub', value: 'Ashafamultazam', href: PERSONAL.github, color: 'amber' },
   ]
 
   return (

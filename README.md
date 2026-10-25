@@ -163,5 +163,3 @@ npm run build
 - ✅ Glass morphism UI
 
 ---
-
-**Dibuat oleh Haris Arief Kamis** | Data Analyst

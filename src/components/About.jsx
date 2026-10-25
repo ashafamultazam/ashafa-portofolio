@@ -3,8 +3,7 @@ import { User, Download, CheckCircle2 } from "lucide-react";
 import { PERSONAL } from "../data/portfolio";
 
 const highlights = [
-  "Mahasiswa aktif S1 Sains Data IPK 3.69",
-  "Lulus program D3 Teknik Komputer",
+  "Lulusan S1 Sains Data IPK 3.36",
   "Pengalaman FullStack Data Analysis Bootcamp (2 bulan)",
   "Memahami SQL, Python, BigQuery, Looker Studio",
   "Pengalaman kepemimpinan organisasi mahasiswa",
@@ -44,8 +43,8 @@ export default function About() {
                   {/* Avatar photo */}
                   <div className="text-center relative w-full h-full">
                     <img
-                      src="/harisariefkamis.jpg"
-                      alt="Foto Haris Arief Kamis"
+                    src={`${import.meta.env.BASE_URL}AshafaMultazam.jpg`}
+                      alt="Foto Ashafa multazam"
                       className="absolute inset-0 w-full h-full object-cover"
                     />
                     {/* Overlay for readability */}
@@ -97,13 +96,13 @@ export default function About() {
               <p>
                 Saya adalah{" "}
                 <span className="text-slate-200 font-medium">
-                  Haris Arief Kamis
+                  Ashafa Multazam
                 </span>
-                , mahasiswa S1 Sains Data di{" "}
+                , Lulusan S1 Sains Data di{" "}
                 <span className="text-teal-400">
-                  Universitas Insan Cita Indonesia (UICI)
+                  Universitas Koperasi Indonesia (IKOPIN)
                 </span>{" "}
-                dengan IPK 3.69, sekaligus lulusan program D3 Teknik Komputer.
+                dengan IPK 3.36.
               </p>
               <p>
                 Passion saya terletak pada kemampuan mengolah data menjadi
@@ -170,12 +169,12 @@ export default function About() {
                 { label: "Location", value: PERSONAL.location, href: null },
                 {
                   label: "LinkedIn",
-                  value: "harisariefkamis",
+                  value: "Ashafamultazam",
                   href: PERSONAL.linkedin,
                 },
                 {
                   label: "GitHub",
-                  value: "harisariefkamis",
+                  value: "Ashafamultazam",
                   href: PERSONAL.github,
                 },
               ].map(({ label, value, href }) => (

@@ -16,14 +16,14 @@ export default function Footer() {
               <Database className="w-3.5 h-3.5 text-teal-400" />
             </div>
             <div>
-              <p className="font-display font-700 text-sm text-slate-200">Haris Arief Kamis</p>
+              <p className="font-display font-700 text-sm text-slate-200">Ashafa Multazam</p>
               <p className="font-mono text-xs text-slate-600">Data Analyst</p>
             </div>
           </div>
 
           {/* Center text */}
           <p className="text-slate-600 text-xs font-mono text-center">
-            © {year} Haris Arief Kamis — Built with{' '}
+            © {year} Ashafa Multazam — Built with{' '}
             <Heart className="inline w-3 h-3 text-red-400 mx-0.5" />
             using React + Supabase
           </p>

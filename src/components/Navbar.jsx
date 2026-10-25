@@ -62,7 +62,7 @@ export default function Navbar() {
             <Database className="w-4 h-4 text-teal-400" />
           </div>
           <span className="font-display font-700 text-sm text-slate-100 hidden sm:block">
-            haris<span className="text-teal-400">.dev</span>
+            Ashafa<span className="text-teal-400">.dev</span>
           </span>
         </motion.button>
 
@@ -82,7 +82,7 @@ export default function Navbar() {
         {/* CTA */}
         <div className="hidden lg:flex items-center gap-3">
           <a
-            href="mailto:harisariefkamis16@gmail.com"
+            href="mailto:multazam.ashafa@gmail.com"
             className="btn-primary text-xs py-2 px-4"
           >
             Hubungi Saya
@@ -122,7 +122,7 @@ export default function Navbar() {
                 </button>
               ))}
               <a
-                href="mailto:harisariefkamis16@gmail.com"
+                href="mailto:multazam.ashafa@gmail.com"
                 className="btn-primary text-sm mt-2 justify-center"
               >
                 Hubungi Saya
