@@ -4,8 +4,8 @@ import { PERSONAL } from "../data/portfolio";
 
 const highlights = [
   "Lulusan S1 Sains Data IPK 3.36",
-  "Pengalaman FullStack Data Analysis Bootcamp (2 bulan)",
-  "Memahami SQL, Python, BigQuery, Looker Studio",
+  "Pengalaman Data Analytics and Gen AI (3 bulan)",
+  "Memahami SQL, Python, BigQuery, Looker Studio, Power BI",
   "Pengalaman kepemimpinan organisasi mahasiswa",
   "Tertarik pada proyek data yang menantang",
 ];
@@ -71,7 +71,7 @@ export default function About() {
                   className="absolute -top-3 -right-3 glass rounded-lg px-3 py-1.5 border border-teal-500/20"
                 >
                   <span className="font-mono text-xs text-teal-400">
-                    IPK 3.69 ⭐
+                    IPK 3.36 ⭐
                   </span>
                 </motion.div>
                 <motion.div

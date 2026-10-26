@@ -5,13 +5,13 @@ export const PERSONAL = {
   title: 'Data Analyst',
   tagline: 'Mengubah data menjadi keputusan bisnis yang bermakna',
   location: 'Bandung, Jawa Barat, Indonesia',
-  email: 'multazam@gmail.com',
+  email: 'multazam.ashafa@gmail.com',
   phone: '+6283130691888',
   linkedin: 'https://linkedin.com/in/ashafamultazam',
   github: 'https://github.com/ashafamultazam',
-  bio: `Lulusan program studi sarjana S1 sains data di Universitas Koperasi Indonesia (IKOPIN) dengan IPK 3.36. Memiliki passion 
-        di bidang data analysis dan pengalaman mengikuti FullStack Intensive Bootcamp Data Analysis 
-        dari platform MySkill selama 2 bulan. Mampu problem solving yang baik dan bekerja secara 
+  bio: `Lulusan program studi sarjana S1 sains data di Universitas Koperasi Indonesia (IKOPIN) 
+        dengan IPK 3.36. Memiliki passion di bidang data analysis dan pengalaman mengikuti Data Analytics and Gen AI 
+        dari platform RevoU selama 3 bulan. Mampu problem solving yang baik dan bekerja secara 
         mandiri maupun dalam tim, berminat berkontribusi dalam proyek-proyek yang menantang.`,
 }
 
@@ -78,7 +78,10 @@ export const EDUCATION = [
     gpa: '3.36',
     status: 'Lulus',
     icon: '🎓',
-    description: 'Mahasiswa aktif semester 5, fokus pada data science, machine learning, dan analisis data.',
+    description: `Lulusan S1 Sains Data dengan IPK 3,36 yang dibekali fondasi statistika, pemrograman, dan machine learning. 
+    Terbiasa mengolah data mentah menjadi insight melalui pembersihan data, analisis, dan visualisasi. 
+    Menyelesaikan tugas akhir tentang Segmentasi produk laptop pada E-Commerce Tokopedia menggunakan K-Means Clustering 
+    serta proyek analisis data yang dapat dilihat di bagian Projects.`,
   },
   
 ]
@@ -93,27 +96,28 @@ export const CERTIFICATIONS = [
     color: 'teal',
   },
   {
-    title: 'Data Analyst FullStack Intensive Bootcamp Batch#14',
-    issuer: 'MySkill',
-    period: 'Januari 5 – Februari 16, 2024',
-    topics: ['Data Analysis', 'Basic Statistics', 'Data Cleansing', 'SQL', 'Python', 'Data Visualization'],
+    title: 'Data Analytics and Gen AI',
+    issuer: 'RevoU',
+    period: 'Agustus 6 – Desember 31, 2024',
+    topics: ['Data Analysis', 'Python', 'Data Visualization', 'SQL', 'Basic Statistics', 'Data Cleansing'],
     badge: '🥇',
     color: 'amber',
     highlight: true,
   },
   {
-    title: 'Final Project Mentoring',
-    issuer: 'MySkill',
-    period: 'Februari 3 – 19, 2024',
-    topics: ['SQL', 'Python', 'Data Visualization'],
-    badge: '📜',
+    title: 'AI for Work & Career Readiness with Google AI Products',
+    issuer: 'Hacktiv8 Indonesia',
+    period: 'Maret 7 – Maret 16, 2026',
+    topics: ['AI for Work', 'Career Readiness', 'Google AI Products', 'Final Project'],
+    badge: '🤖',
     color: 'teal',
   },
   {
-    title: 'TOEFL Preparation Bootcamp',
-    issuer: 'MySkill',
-    period: 'Juni 7 – Juli 5, 2024',
-    topics: ['TOEFL iBT', 'Grammar', 'Reading', 'Listening', 'Speaking', 'Writing'],
+    title: 'TOEFL ITP (450)',
+    Skor: '450',
+    issuer: 'Pusat Bahasa UNPAD',
+    period: 'Juli 2026 – Juli 2026',
+    topics: ['TOEFL ITP', 'Grammar', 'Reading', 'Listening', 'Speaking', 'Writing'],
     badge: '🌐',
     color: 'amber',
   },
