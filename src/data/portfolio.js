@@ -11,7 +11,7 @@ export const PERSONAL = {
   github: 'https://github.com/ashafamultazam',
   bio: `Lulusan program studi sarjana S1 sains data di Universitas Koperasi Indonesia (IKOPIN) 
         dengan IPK 3.36. Memiliki passion di bidang data analysis dan pengalaman mengikuti Data Analytics and Gen AI 
-        dari platform RevoU selama 3 bulan. Mampu problem solving yang baik dan bekerja secara 
+        dari platform RevoU selama 5 bulan. Mampu problem solving yang baik dan bekerja secara 
         mandiri maupun dalam tim, berminat berkontribusi dalam proyek-proyek yang menantang.`,
 }
 
@@ -114,7 +114,6 @@ export const CERTIFICATIONS = [
   },
   {
     title: 'TOEFL ITP (450)',
-    Skor: '450',
     issuer: 'Pusat Bahasa UNPAD',
     period: 'Juli 2026 – Juli 2026',
     topics: ['TOEFL ITP', 'Grammar', 'Reading', 'Listening', 'Speaking', 'Writing'],
@@ -123,13 +122,20 @@ export const CERTIFICATIONS = [
   },
 ]
 
-export const ORGANIZATIONS = [
+export const ORGANIZAETIONS = [
   {
-    role: 'Anggota',
-    org: 'Pustaka Insani Institute (PII)',
-    location: 'Kabupaten Halmahera Timur',
-    period: '2025 – 2026',
+    role: 'Wakil Ketua',
+    org: 'Himpunan Mahasiswa Sains Data',
+    location: 'Jatinangor',
+    period: 'Oktober 2023 – Desember 2024',
     icon: '📚',
+    events: [
+      `Mengoordinasikan seluruh bidang dan menjaga sinergi antarpengurus 
+      dalam pelaksanaan program kerja himpunan selama satu periode kepengurusan.`,
+      'Mewakili ketua dalam kegiatan organisasi serta membimbing pengurus internal.',
+      `Bertanggung jawab atas 6 program kerja dari 4 bidang yang 
+      melibatkan 24 pengurus selama satu periode.`,
+    ]
   },
   {
     role: 'Wasekum Teknologi & Kreatif Digital',

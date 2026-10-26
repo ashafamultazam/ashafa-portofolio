@@ -113,7 +113,7 @@ export default function About() {
                 yang mempermudah pengambilan keputusan bisnis.
               </p>
               <p>
-                Saya aktif berkontribusi dalam berbagai organisasi kemahasiswaan
+                Saya aktif berkontribusi Berbagai acara diluar maupun didalam kampus 
                 dan memiliki pengalaman kepemimpinan yang kuat — mulai dari
                 ketua panitia event besar hingga koordinator program sosial
                 lingkungan hidup.

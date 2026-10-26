@@ -140,7 +140,7 @@ export default function Hero() {
               <h1 className="font-display font-800 text-5xl lg:text-6xl xl:text-7xl leading-tight text-slate-50">
                 Ashafa Multazam
                 <br />
-                <span className="text-teal-400">Azam</span>
+                <span className="text-teal-400">as Azzam</span>
               </h1>
             </motion.div>
 
