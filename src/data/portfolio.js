@@ -122,7 +122,7 @@ export const CERTIFICATIONS = [
   },
 ]
 
-export const ORGANIZAETIONS = [
+export const ORGANIZATIONS = [
   {
     role: 'Wakil Ketua',
     org: 'Himpunan Mahasiswa Sains Data',
