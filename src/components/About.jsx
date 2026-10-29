@@ -4,7 +4,7 @@ import { PERSONAL } from "../data/portfolio";
 
 const highlights = [
   "Lulusan S1 Sains Data IPK 3.36",
-  "Pengalaman Data Analytics and Gen AI (3 bulan)",
+  "Pengalaman Data Analytics and Gen AI (5 bulan)",
   "Memahami SQL, Python, BigQuery, Looker Studio, Power BI",
   "Pengalaman kepemimpinan organisasi mahasiswa",
   "Tertarik pada proyek data yang menantang",

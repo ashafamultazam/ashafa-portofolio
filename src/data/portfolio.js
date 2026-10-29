@@ -88,14 +88,6 @@ export const EDUCATION = [
 
 export const CERTIFICATIONS = [
   {
-    title: 'Mini Bootcamp DQLab Batch#10',
-    issuer: 'DQLab',
-    period: '16-21 Februari 2026',
-    topics: ['Machine Learning & AI', 'Data Analyst with SQL & Python', 'Python for Data Science', 'Fundamental SQL'],
-    badge: '🏅',
-    color: 'teal',
-  },
-  {
     title: 'Data Analytics and Gen AI',
     issuer: 'RevoU',
     period: 'Agustus 6 – Desember 31, 2024',
@@ -186,28 +178,28 @@ export const ORGANIZATIONS = [
 
 export const PROJECTS = [
   {
-    title: 'Analisis Penjualan E-Commerce',
+    title: 'Dashboard kependudukan RT 04 Sawangan Depok',
     description: 'Analisis komprehensif data transaksi e-commerce menggunakan SQL dan Python untuk mengidentifikasi tren penjualan dan perilaku pelanggan.',
     tech: ['Python', 'SQL', 'Pandas', 'Looker Studio'],
     icon: '🛒',
     status: 'Selesai',
   },
   {
-    title: 'Dashboard KPI Regional',
+    title: 'Dashboard KPI Proyek Business analytics',
     description: 'Dashboard interaktif menggunakan Google Looker Studio untuk memvisualisasikan KPI bisnis multi-regional dengan update data real-time.',
     tech: ['BigQuery', 'Looker Studio', 'SQL'],
     icon: '📊',
     status: 'Selesai',
   },
   {
-    title: 'Prediksi Churn Customer',
+    title: 'Dasboard Global superstore (MSIB RevoU)',
     description: 'Model machine learning untuk memprediksi kemungkinan churn pelanggan dengan analisis feature importance dan rekomendasi retensi.',
     tech: ['Python', 'Scikit-learn', 'Pandas', 'Matplotlib'],
     icon: '🤖',
     status: 'Selesai',
   },
   {
-    title: 'Data Pipeline Automation',
+    title: 'Dashboard Proyek Business Intelligence',
     description: 'Otomasi pipeline pengolahan data dari berbagai sumber menggunakan Python script untuk menghasilkan laporan harian yang konsisten.',
     tech: ['Python', 'SQL', 'Google Sheets API'],
     icon: '⚙️',
