@@ -58,10 +58,13 @@ const techStack = [
   { name: 'Pandas', color: '#14B8A6' },
   { name: 'NumPy', color: '#F59E0B' },
   { name: 'Google Colab', color: '#F59E0B' },
-  { name: 'Excel', color: '#22C55E' },
+  { name: 'Excel (IF, XLOOKUP, Match, Index)', color: '#22C55E' },
   { name: 'Power Point', color: '#EF4444' },
   { name: 'GitHub', color: '#94A3B8' },
   { name: 'Matplotlib', color: '#8B5CF6' },
+  { name: 'Power BI', color: '#EF4444' },
+  { name: 'Canva', color: '#3B82F6' },
+
 ]
 
 export default function Skills() {
