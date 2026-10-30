@@ -128,80 +128,42 @@ export const ORGANIZATIONS = [
       `Bertanggung jawab atas 6 program kerja dari 4 bidang yang 
       melibatkan 24 pengurus selama satu periode.`,
     ]
-  },
-  {
-    role: 'Wasekum Teknologi & Kreatif Digital',
-    org: 'HMI Komisariat Cakrawala UICI',
-    location: 'Jakarta',
-    period: '2025 – 2026',
-    icon: '💡',
-  },
-  {
-    role: 'Anggota Bidang Pendidikan & Pengkaderan',
-    org: 'Ikatan Pelajar Mahasiswa Halmahera Timur (IPM-HT) Bogor',
-    location: 'Bogor',
-    period: '2022 – 2026',
-    icon: '🎓',
-    events: [
-      'Ketua Panitia MUSYAWARAH BESAR (MUBES) - Juli 2022 & Agustus 2024',
-      'Ketua Panitia Pelantikan & Diskusi Publik - November 2022',
-      'Sekretaris Panitia SPO - Februari 2023',
-      'Ketua Panitia SPO - Februari 2022',
-      'Koordinator Seksi HUMAS - November 2024',
-    ]
-  },
-  {
-    role: 'Delegasi - Devisi Lingkungan Hidup',
-    org: 'Garuda Nusa Youth Action GNYA#3',
-    location: 'Desa Tenganan, Bali',
-    period: 'Januari 2022',
-    icon: '🌿',
-    events: [
-      'Recycle Hanging Plant – mendaur ulang botol bekas',
-      'Street Sign/Information – edukasi lingkungan',
-      'Hydroponic NFT & Metode WICK',
-      'EcoEnzyme – alternatif pembersih ramah lingkungan',
-    ]
-  },
-  {
-    role: 'Koordinator WCD & Pendiri Komunitas SODARA',
-    org: 'World Cleanup Day – Kabupaten Halmahera Timur',
-    location: 'Halmahera Timur',
-    period: 'September – Oktober 2021',
-    icon: '♻️',
-    events: [
-      'Koordinator sosialisasi lingkungan SD, SMP, SMA, dan instansi terkait',
-      'Pendiri Komunitas Solidaritas Sadar Sampah (SODARA) Halmahera – 11 Oktober 2020',
-    ]
-  },
+  }
 ]
 
 export const PROJECTS = [
   {
-    title: 'Dashboard kependudukan RT 04 Sawangan Depok',
-    description: 'Analisis komprehensif data transaksi e-commerce menggunakan SQL dan Python untuk mengidentifikasi tren penjualan dan perilaku pelanggan.',
-    tech: ['Python', 'SQL', 'Pandas', 'Looker Studio'],
-    icon: '🛒',
+    title: 'Dashboard Kependudukan RT 04 Sawangan Depok',
+    description: `Visualisasi demografi kependudukan tingkat RT 
+    mencakup distribusi tingkat pendidikan, struktur demografi (usia & gender), 
+    komposisi profesi, dan sebaran agama untuk optimalisasi pemetaan serta pelayanan publik lokal.`,
+    tech: ['Looker Studio', 'Data Visualization', 'Data Analytics'],
+    icon: '👥',
     status: 'Selesai',
   },
   {
-    title: 'Dashboard KPI Proyek Business analytics',
-    description: 'Dashboard interaktif menggunakan Google Looker Studio untuk memvisualisasikan KPI bisnis multi-regional dengan update data real-time.',
-    tech: ['BigQuery', 'Looker Studio', 'SQL'],
+    title: 'HR Analytics Dashboard',
+    description: `Dashboard analitik SDM interaktif untuk memetakan metrik attrition karyawan (16.3%), 
+    analisis turnover berdasarkan pengalaman kerja, kelompok usia, tingkat gaji (Salary Slab), 
+    serta kepuasan tiap peran jabatan (Job Role & Satisfaction).`,
+    tech: ['Looker Studio', 'HR Analytics', 'Business Intelligence'],
     icon: '📊',
     status: 'Selesai',
   },
   {
-    title: 'Dasboard Global superstore (MSIB RevoU)',
-    description: 'Model machine learning untuk memprediksi kemungkinan churn pelanggan dengan analisis feature importance dan rekomendasi retensi.',
-    tech: ['Python', 'Scikit-learn', 'Pandas', 'Matplotlib'],
-    icon: '🤖',
+    title: 'Dashboard Global Superstore (MSIB RevoU)',
+    description: `Analisis performa bisnis ritel global yang mengidentifikasi kendala profitabilitas kategori Furniture, 
+    evaluasi pola kerugian (minus profit) pada sub-kategori Tables & Bookcases, 
+    efisiensi biaya pengiriman per wilayah, serta rasio metode pengiriman.`,
+    tech: ['Looker Studio', 'Business Analytics', 'Data Visualization', 'SQL'],
+    icon: '🛒',
     status: 'Selesai',
   },
   {
     title: 'Dashboard Proyek Business Intelligence',
-    description: 'Otomasi pipeline pengolahan data dari berbagai sumber menggunakan Python script untuk menghasilkan laporan harian yang konsisten.',
-    tech: ['Python', 'SQL', 'Google Sheets API'],
+    description: `Pengembangan dashboard Business Intelligence multi-dimensi yang mengintegrasikan metrik kinerja operasional, 
+    analisis segmentasi pelanggan (Customer Value & Segment), serta pemantauan biaya logistik untuk mendukung pengambilan keputusan strategis.`,
+    tech: ['Looker Studio', 'BigQuery', 'SQL', 'Data Analytics'],
     icon: '⚙️',
     status: 'Selesai',
   },
