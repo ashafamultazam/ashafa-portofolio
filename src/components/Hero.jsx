@@ -5,7 +5,7 @@ import CountUp from 'react-countup'
 import { useInView } from 'react-intersection-observer'
 import { PERSONAL, STATS } from '../data/portfolio'
 
-const ROLES = ['Data Analyst', 'Business Inteligence', 'Business Analyst', 'Problem Solver']
+const ROLES = ['Data Analyst', 'Business Intelligence', 'Business Analyst', 'Problem Solver']
 
 function TypeWriter({ words }) {
   const [idx, setIdx] = useState(0)
