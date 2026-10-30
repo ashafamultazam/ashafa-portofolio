@@ -9,7 +9,7 @@ import Skills from './components/Skills'
 import Education from './components/Education'
 import Certifications from './components/Certifications'
 import Projects from './components/Projects'
-import Organizations from './components/Organizations'
+import Experience from './components/Experience'
 import Contact from './components/Contact'
 import Footer from './components/Footer'
 import Divider from './components/Divider'
@@ -42,7 +42,7 @@ export default function App() {
         <Divider />
         <Projects />
         <Divider />
-        <Organizations />
+        <Experience />
         <Divider />
         <Contact />
       </main>

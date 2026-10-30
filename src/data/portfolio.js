@@ -130,6 +130,24 @@ export const ORGANIZATIONS = [
     ]
   }
 ]
+export const PROFESSIONAL_EXPERIENCE = [
+{
+  role: 'Human Capital Intern',
+  company: 'Pertamina Patra Niaga RU VI Balongan',
+  type: 'Magang',
+  period: 'Februari 2026 – Maret 2026',
+  location: 'Indramyu',
+  icon: '💼',
+  points: [
+  'Menjadi panitia pelatihan karyawan dengan 300 peserta.', 
+  'bertanggung jawab atas administrasi dan dokumentasi kegiatan.',
+  `Membangun database sertifikasi dan pelatihan untuk ±300 karyawan di Excel dengan pelacakan masa berlaku sertifikat, 
+  sehingga pencarian data dan pemantauan sertifikat yang akan kedaluwarsa jadi lebih cepat.`,
+  `Mengaudit dan menstandarkan 1.256 dokumen karyawan dari sistem lama ke struktur folder terstandar dengan checklist kelengkapan, 
+  sehingga data siap dimigrasikan ke sistem baru.`,
+   ],
+  },
+]
 
 export const PROJECTS = [
   {
