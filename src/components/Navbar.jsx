@@ -9,7 +9,7 @@ const navItems = [
   { label: 'Pendidikan', href: '#education' },
   { label: 'Sertifikasi', href: '#certifications' },
   { label: 'Proyek', href: '#projects' },
-  { label: 'Pengalaman', href: '#Experience' },
+  { label: 'Pengalaman', href: '#experience' },
   { label: 'Kontak', href: '#contact' },
 ]
 
