@@ -100,7 +100,7 @@ export const CERTIFICATIONS = [
     title: 'AI for Work & Career Readiness with Google AI Products',
     issuer: 'Hacktiv8 Indonesia',
     period: 'Maret 7 – Maret 16, 2026',
-    topics: ['AI for Work', 'Career Readiness', 'Google AI Products', 'Final Project'],
+    topics: ['AI for Work', 'Career Readiness', 'Google AI Products', 'Final Project','Gamma AI'],
     badge: '🤖',
     color: 'teal',
   },
@@ -111,6 +111,15 @@ export const CERTIFICATIONS = [
     topics: ['TOEFL ITP', 'Grammar', 'Reading', 'Listening', 'Speaking', 'Writing'],
     badge: '🌐',
     color: 'amber',
+  },
+  
+  {
+  title: 'AWS AI Academy 2026',
+    issuer: 'Dicoding',
+    period: 'Oktober 2026 – Oktober 2029',
+    topics: ['AWS Cloud Foundation', 'Machine Learning', 'Generative AI', 'Data Analytics', 'Prompt Engineering'],
+    badge: '🌐',
+    color: 'teal',
   },
 ]
 
@@ -136,7 +145,7 @@ export const PROFESSIONAL_EXPERIENCE = [
   company: 'Pertamina Patra Niaga RU VI Balongan',
   type: 'Magang',
   period: 'Februari 2026 – Maret 2026',
-  location: 'Indramyu',
+  location: 'Indramayu',
   icon: '💼',
   points: [
   'Menjadi panitia pelatihan karyawan dengan 300 peserta.', 
