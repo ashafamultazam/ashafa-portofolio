@@ -4,6 +4,8 @@ import { Layers, ExternalLink, Github, Tag, FileText } from 'lucide-react'
 import { PROJECTS, PERSONAL } from '../data/portfolio'
 
 const BASE = import.meta.env.BASE_URL
+const THUMB_RATIO = 'aspect-[2/1]'    
+
 
 // Pulls the file id out of a Google Drive link (…/d/FILE_ID/view or …?id=FILE_ID)
 const driveId = (url = '') =>
@@ -22,7 +24,7 @@ function Thumb({ project }) {
   const src = previewSrc(project)
 
   return (
-    <div className="relative aspect-[5/2] overflow-hidden bg-navy-800 border-b border-slate-700/30">
+    <div className="relative aspect-[2/1] overflow-hidden bg-navy-800 border-b border-slate-700/30">
       {src && !failed ? (
         <img
           src={src}
