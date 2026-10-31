@@ -3,7 +3,7 @@ import { motion } from 'framer-motion'
 import { Mail, Phone, MapPin, Send, Loader2, MessageCircle, Github, Linkedin } from 'lucide-react'
 import Swal from 'sweetalert2'
 import Comments from './Comments'
-import { PERSONAL } from '../data/portfolio'
+import { PERSONAL, GMAIL_LINK  } from '../data/portfolio'
 
 export default function Contact() {
   const [form, setForm] = useState({ name: '', email: '', subject: '', message: '' })
@@ -40,7 +40,7 @@ export default function Contact() {
   }
 
   const contactItems = [
-    { icon: Mail, label: 'Email', value: PERSONAL.email, href: `mailto:${PERSONAL.email}`, color: 'teal' },
+    { icon: Mail, label: 'Email', value: PERSONAL.email, href: GMAIL_LINK, color: 'teal' },
     { icon: Phone, label: 'WhatsApp', value: PERSONAL.phone, href: `https://wa.me/6283130691888`, color: 'teal' },
     { icon: MapPin, label: 'Lokasi', value: PERSONAL.location, href: null, color: 'amber' },
     { icon: Linkedin, label: 'LinkedIn', value: 'Ashafamultazam', href: PERSONAL.linkedin, color: 'teal' },

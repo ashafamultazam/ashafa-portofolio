@@ -1,5 +1,5 @@
 import { Github, Linkedin, Mail, Heart, Database } from 'lucide-react'
-import { PERSONAL } from '../data/portfolio'
+import { PERSONAL, GMAIL_LINK } from '../data/portfolio'
 
 export default function Footer() {
   const year = new Date().getFullYear()
@@ -33,7 +33,7 @@ export default function Footer() {
             {[
               { icon: Github, href: PERSONAL.github },
               { icon: Linkedin, href: PERSONAL.linkedin },
-              { icon: Mail, href: `mailto:${PERSONAL.email}` },
+              { icon: Mail, href: GMAIL_LINK },
             ].map(({ icon: Icon, href }, i) => (
               <a
                 key={i}

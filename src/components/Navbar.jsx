@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { Menu, X, Database } from 'lucide-react'
+import { GMAIL_LINK } from '../data/portfolio'
 
 const navItems = [
   { label: 'Beranda', href: '#hero' },
@@ -82,11 +83,13 @@ export default function Navbar() {
         {/* CTA */}
         <div className="hidden lg:flex items-center gap-3">
           <a
-            href="mailto:multazam.ashafa@gmail.com"
-            className="btn-primary text-xs py-2 px-4"
+          href={GMAIL_LINK}
+          target="_blank"
+          rel="noreferrer"
+          className="btn-primary text-sm mt-2 justify-center"
           >
             Hubungi Saya
-          </a>
+            </a>
         </div>
 
         {/* Mobile toggle */}
@@ -122,11 +125,13 @@ export default function Navbar() {
                 </button>
               ))}
               <a
-                href="mailto:multazam.ashafa@gmail.com"
-                className="btn-primary text-sm mt-2 justify-center"
+              href={GMAIL_LINK}
+              target="_blank"
+              rel="noreferrer"
+              className="btn-primary text-xs py-2 px-4"
               >
                 Hubungi Saya
-              </a>
+                </a>
             </div>
           </motion.div>
         )}

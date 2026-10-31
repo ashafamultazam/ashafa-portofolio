@@ -14,6 +14,7 @@ export const PERSONAL = {
         dari platform RevoU selama 5 bulan. Mampu problem solving yang baik dan bekerja secara 
         mandiri maupun dalam tim, berminat berkontribusi dalam proyek-proyek yang menantang.`,
 }
+export const GMAIL_LINK = `https://mail.google.com/mail/?view=cm&fs=1&to=${PERSONAL.email}&su=${encodeURIComponent('Halo Ashafa, saya tertarik berdiskusi')}`
 
 export const STATS = [
   { label: 'IPK', value: 3.36, suffix: '', prefix: '', decimals: 2 },
@@ -50,10 +51,10 @@ export const SKILLS = [
     icon: '📊',
     color: 'teal',
     items: [
-      { name: 'Google Looker Studio', level: 80 },
-      { name: 'Data Visualization', level: 78 },
+      { name: 'Google Looker Studio', level: 86 },
+      { name: 'Data Visualization', level: 86 },
       { name: 'Microsoft Excel', level: 85 },
-      { name: 'Power BI', level: 80 },
+      { name: 'Power BI', level: 90 },
     ]
   },
   {
@@ -91,7 +92,7 @@ export const CERTIFICATIONS = [
     title: 'Data Analytics and Gen AI',
     issuer: 'RevoU',
     period: 'Agustus 6 – Desember 31, 2024',
-    topics: ['Data Analysis', 'Python', 'Data Visualization', 'SQL', 'Basic Statistics', 'Data Cleansing'],
+    topics: ['Data Analysis', 'Python', 'Data Visualization', 'SQL', 'Basic Statistics', 'Data Cleansing','Power BI','Google Collab'],
     badge: '🥇',
     color: 'amber',
     highlight: true,
@@ -100,7 +101,7 @@ export const CERTIFICATIONS = [
     title: 'AI for Work & Career Readiness with Google AI Products',
     issuer: 'Hacktiv8 Indonesia',
     period: 'Maret 7 – Maret 16, 2026',
-    topics: ['AI for Work', 'Career Readiness', 'Google AI Products', 'Final Project','Gamma AI'],
+    topics: ['AI for Work', 'Career Readiness', 'Google AI Products', 'Final Project','Gamma AI','Gemini'],
     badge: '🤖',
     color: 'teal',
   },
@@ -118,7 +119,7 @@ export const CERTIFICATIONS = [
     issuer: 'Dicoding',
     period: 'Oktober 2026 – Oktober 2029',
     topics: ['AWS Cloud Foundation', 'Machine Learning', 'Generative AI', 'Data Analytics', 'Prompt Engineering'],
-    badge: '🌐',
+    badge: '☁️',
     color: 'teal',
   },
 ]
@@ -174,7 +175,7 @@ export const PROJECTS = [
     description: `Dashboard analitik SDM interaktif untuk memetakan metrik attrition karyawan (16.3%), 
     analisis turnover berdasarkan pengalaman kerja, kelompok usia, tingkat gaji (Salary Slab), 
     serta kepuasan tiap peran jabatan (Job Role & Satisfaction).`,
-    tech: ['Looker Studio', 'HR Analytics', 'Business Intelligence'],
+    tech: ['Power BI', 'HR Analytics', 'Business Intelligence', 'Data analysis'],
     icon: '📊',
     status: 'Selesai',
     link: 'https://drive.google.com/file/d/1E2wHb309ozUogUOTJPTbBU0I6-KxNG2A/view?usp=sharing',
@@ -184,7 +185,7 @@ export const PROJECTS = [
     description: `Analisis performa bisnis ritel global yang mengidentifikasi kendala profitabilitas kategori Furniture, 
     evaluasi pola kerugian (minus profit) pada sub-kategori Tables & Bookcases, 
     efisiensi biaya pengiriman per wilayah, serta rasio metode pengiriman.`,
-    tech: ['Looker Studio', 'Business Analytics', 'Data Visualization', 'SQL'],
+    tech: ['Power BI','Kaggle', 'Business Analytics', 'Data Visualization', 'SQL','Google Colab'],
     icon: '🛒',
     status: 'Selesai',
     link: 'https://drive.google.com/file/d/12fcCnOOTtub4S2YPppceG4buzm9zZJpY/view?usp=sharing',
@@ -193,9 +194,9 @@ export const PROJECTS = [
     title: 'Dashboard Proyek Business Intelligence',
     description: `Pengembangan dashboard Business Intelligence multi-dimensi yang mengintegrasikan metrik kinerja operasional, 
     analisis segmentasi pelanggan (Customer Value & Segment), serta pemantauan biaya logistik untuk mendukung pengambilan keputusan strategis.`,
-    tech: ['Looker Studio', 'BigQuery', 'SQL', 'Data Analytics'],
+    tech: ['Power BI','Dax', 'BigQuery', 'SQL', 'Data Analytics','Data Visualization'],
     icon: '⚙️',
     status: 'Selesai',
-    link: 'https://drive.google.com/file/d/1E2wHb309ozUogUOTJPTbBU0I6-KxNG2A/view?usp=sharing',
+    link: 'https://drive.google.com/file/d/10hv1Oix9vk2277ZK68Tg64ISGRFSk3HA/view?usp=sharing',
   },
 ]

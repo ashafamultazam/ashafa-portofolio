@@ -22,7 +22,7 @@ function Thumb({ project }) {
   const src = previewSrc(project)
 
   return (
-    <div className="relative aspect-[16/10] overflow-hidden bg-navy-800 border-b border-slate-700/30">
+    <div className="relative aspect-[5/2] overflow-hidden bg-navy-800 border-b border-slate-700/30">
       {src && !failed ? (
         <img
           src={src}

@@ -3,7 +3,7 @@ import { motion } from 'framer-motion'
 import { Github, Linkedin, Mail, ArrowDown, ChevronRight, MapPin } from 'lucide-react'
 import CountUp from 'react-countup'
 import { useInView } from 'react-intersection-observer'
-import { PERSONAL, STATS } from '../data/portfolio'
+import { PERSONAL, STATS, GMAIL_LINK } from '../data/portfolio'
 
 const ROLES = ['Data Analyst', 'Business Intelligence', 'Business Analyst', 'Problem Solver']
 
@@ -202,7 +202,7 @@ export default function Hero() {
               {[
                 { icon: Github, href: PERSONAL.github, label: 'GitHub' },
                 { icon: Linkedin, href: PERSONAL.linkedin, label: 'LinkedIn' },
-                { icon: Mail, href: `mailto:${PERSONAL.email}`, label: 'Email' },
+                { icon: Mail, href: GMAIL_LINK, label: 'Email' },
               ].map(({ icon: Icon, href, label }) => (
                 <a
                   key={label}
