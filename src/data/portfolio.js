@@ -158,6 +158,7 @@ export const PROJECTS = [
     tech: ['Looker Studio', 'Data Visualization', 'Data Analytics'],
     icon: '👥',
     status: 'Selesai',
+    link: 'https://drive.google.com/file/d/14dahu_LZwb-X4_CSLH1pq8QHJZu093mk/view?usp=sharing',
   },
   {
     title: 'HR Analytics Dashboard',
@@ -167,6 +168,7 @@ export const PROJECTS = [
     tech: ['Looker Studio', 'HR Analytics', 'Business Intelligence'],
     icon: '📊',
     status: 'Selesai',
+    link: 'https://drive.google.com/file/d/1E2wHb309ozUogUOTJPTbBU0I6-KxNG2A/view?usp=sharing',
   },
   {
     title: 'Dashboard Global Superstore (MSIB RevoU)',
@@ -176,6 +178,7 @@ export const PROJECTS = [
     tech: ['Looker Studio', 'Business Analytics', 'Data Visualization', 'SQL'],
     icon: '🛒',
     status: 'Selesai',
+    link: 'https://drive.google.com/file/d/12fcCnOOTtub4S2YPppceG4buzm9zZJpY/view?usp=sharing',
   },
   {
     title: 'Dashboard Proyek Business Intelligence',
@@ -184,5 +187,6 @@ export const PROJECTS = [
     tech: ['Looker Studio', 'BigQuery', 'SQL', 'Data Analytics'],
     icon: '⚙️',
     status: 'Selesai',
+    link: 'https://drive.google.com/file/d/1E2wHb309ozUogUOTJPTbBU0I6-KxNG2A/view?usp=sharing',
   },
 ]
