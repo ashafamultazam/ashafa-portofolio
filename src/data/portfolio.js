@@ -188,7 +188,7 @@ export const PROJECTS = [
     tech: ['Power BI','Kaggle', 'Business Analytics', 'Data Visualization', 'SQL','Google Colab'],
     icon: '🛒',
     status: 'Selesai',
-    link: 'https://drive.google.com/file/d/12fcCnOOTtub4S2YPppceG4buzm9zZJpY/view?usp=sharing',
+    link: 'https://drive.google.com/file/d/1B0Jx9rboy6QGY-j_3TX0e9TzIpFmpfik/view?usp=sharing',
   },
   {
     title: 'Dashboard Proyek Business Intelligence',
