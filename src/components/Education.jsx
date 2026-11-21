@@ -65,11 +65,11 @@ export default function Education() {
                     <p className="text-slate-400 text-sm mb-5 leading-relaxed">{edu.description}</p>
 
                     <div className="flex flex-wrap gap-4 text-sm">
-                      <div className="flex items-center gap-2 text-slate-500">
+                      <div className="flex items-center gap-2 text-slate-400">
                         <Calendar className="w-3.5 h-3.5 text-teal-500/60" />
                         <span className="font-mono text-xs">{edu.period}</span>
                       </div>
-                      <div className="flex items-center gap-2 text-slate-500">
+                      <div className="flex items-center gap-2 text-slate-400">
                         <MapPin className="w-3.5 h-3.5 text-teal-500/60" />
                         <span className="text-xs">{edu.location}</span>
                       </div>

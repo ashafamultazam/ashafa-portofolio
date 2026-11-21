@@ -6,6 +6,7 @@ export default {
   ],
   theme: {
     extend: {
+      fontWeight: { 300: '300', 500: '500', 600: '600', 700: '700', 800: '800' },
       fontFamily: {
         display: ['Sora', 'sans-serif'],
         body: ['DM Sans', 'sans-serif'],

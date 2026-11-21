@@ -112,14 +112,14 @@ export default function Projects() {
                       </div>
                     </div>
                     {project.link && (
-                      <ExternalLink className="w-4 h-4 mt-1 shrink-0 text-slate-600 group-hover:text-teal-400 transition-colors" />
+                      <ExternalLink className="w-4 h-4 mt-1 shrink-0 text-slate-400 group-hover:text-teal-400 transition-colors" />
                     )}
                   </div>
 
                   <p className="text-slate-400 text-sm leading-relaxed mb-5">{project.description}</p>
 
                   <div className="flex items-center gap-1.5 flex-wrap">
-                    <Tag className="w-3 h-3 text-slate-600" />
+                    <Tag className="w-3 h-3 text-slate-400" />
                     {project.tech.map((t) => (
                       <span key={t} className="px-2 py-0.5 bg-navy-800/80 border border-slate-700/40 rounded text-xs font-mono text-slate-400">
                         {t}

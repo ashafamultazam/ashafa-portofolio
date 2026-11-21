@@ -1,7 +1,6 @@
 import { useState, useEffect } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { MessageSquare, Send, User, Clock, Loader2 } from 'lucide-react'
-import Swal from 'sweetalert2'
 import { commentsService } from '../lib/supabase'
 
 function CommentItem({ comment, index }) {
@@ -26,7 +25,7 @@ function CommentItem({ comment, index }) {
         <div className="flex-1 min-w-0">
           <div className="flex items-center justify-between gap-2 mb-1.5">
             <span className="font-display font-600 text-sm text-slate-200">{comment.name}</span>
-            <div className="flex items-center gap-1 text-slate-600 text-xs font-mono shrink-0">
+            <div className="flex items-center gap-1 text-slate-400 text-xs font-mono shrink-0">
               <Clock className="w-3 h-3" />
               {new Date(comment.created_at).toLocaleDateString('id-ID', {
                 day: 'numeric', month: 'short', year: 'numeric'
@@ -91,6 +90,7 @@ export default function Comments() {
   const handleSubmit = async () => {
     if (!validate()) return
     setSubmitting(true)
+    const { default: Swal } = await import('sweetalert2')
     try {
       const newComment = await commentsService.create(form)
       if (newComment?.[0]) {
@@ -130,47 +130,51 @@ export default function Comments() {
         <div className="space-y-4">
           {/* Name */}
           <div>
-            <label className="block text-xs font-mono text-slate-500 mb-1.5 tracking-wide">NAMA *</label>
+            <label htmlFor="cm-name" className="block text-xs font-mono text-slate-400 mb-1.5 tracking-wide">NAMA *</label>
             <input
+              id="cm-name" name="name" autoComplete="name" aria-invalid={!!errors.name} aria-describedby={errors.name ? 'cm-name-err' : undefined}
               type="text"
               value={form.name}
               onChange={e => setForm({ ...form, name: e.target.value })}
               placeholder="Nama lengkap Anda"
-              className={`w-full glass rounded-lg px-4 py-3 text-sm text-slate-200 placeholder-slate-600 border transition-colors outline-none focus:border-teal-500/50 ${
+              className={`w-full glass rounded-lg px-4 py-3 text-sm text-slate-200 placeholder-slate-500 border transition-colors outline-none focus:border-teal-500/50 ${
                 errors.name ? 'border-red-500/40' : 'border-slate-700/40'
               }`}
             />
-            {errors.name && <p className="text-red-400 text-xs mt-1">{errors.name}</p>}
+            {errors.name && <p id="cm-name-err" role="alert" className="text-red-400 text-xs mt-1">{errors.name}</p>}
           </div>
 
           {/* Email */}
           <div>
-            <label className="block text-xs font-mono text-slate-500 mb-1.5 tracking-wide">EMAIL (opsional)</label>
+            <label htmlFor="cm-email" className="block text-xs font-mono text-slate-400 mb-1.5 tracking-wide">EMAIL (opsional)</label>
             <input
+              id="cm-email" name="email" autoComplete="email"
               type="email"
               value={form.email}
               onChange={e => setForm({ ...form, email: e.target.value })}
               placeholder="email@contoh.com"
-              className="w-full glass rounded-lg px-4 py-3 text-sm text-slate-200 placeholder-slate-600 border border-slate-700/40 transition-colors outline-none focus:border-teal-500/50"
+              className="w-full glass rounded-lg px-4 py-3 text-sm text-slate-200 placeholder-slate-500 border border-slate-700/40 transition-colors outline-none focus:border-teal-500/50"
             />
           </div>
 
           {/* Message */}
           <div>
-            <label className="block text-xs font-mono text-slate-500 mb-1.5 tracking-wide">PESAN *</label>
+            <label htmlFor="cm-message" className="block text-xs font-mono text-slate-400 mb-1.5 tracking-wide">PESAN *</label>
             <textarea
+              id="cm-message" name="message" aria-invalid={!!errors.message} aria-describedby={errors.message ? 'cm-message-err' : undefined}
               rows={4}
               value={form.message}
               onChange={e => setForm({ ...form, message: e.target.value })}
               placeholder="Tulis pesan Anda di sini..."
-              className={`w-full glass rounded-lg px-4 py-3 text-sm text-slate-200 placeholder-slate-600 border transition-colors outline-none focus:border-teal-500/50 resize-none ${
+              className={`w-full glass rounded-lg px-4 py-3 text-sm text-slate-200 placeholder-slate-500 border transition-colors outline-none focus:border-teal-500/50 resize-none ${
                 errors.message ? 'border-red-500/40' : 'border-slate-700/40'
               }`}
             />
-            {errors.message && <p className="text-red-400 text-xs mt-1">{errors.message}</p>}
+            {errors.message && <p id="cm-message-err" role="alert" className="text-red-400 text-xs mt-1">{errors.message}</p>}
           </div>
 
           <button
+            type="button"
             onClick={handleSubmit}
             disabled={submitting}
             className="btn-primary w-full justify-center disabled:opacity-60 disabled:cursor-not-allowed"
@@ -201,7 +205,7 @@ export default function Comments() {
             <Loader2 className="w-6 h-6 text-teal-400 animate-spin" />
           </div>
         ) : comments.length === 0 ? (
-          <div className="text-center py-12 text-slate-600">
+          <div className="text-center py-12 text-slate-400">
             <MessageSquare className="w-10 h-10 mx-auto mb-3 opacity-30" />
             <p className="text-sm">Belum ada komentar. Jadilah yang pertama!</p>
           </div>

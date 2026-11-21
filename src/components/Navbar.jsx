@@ -20,29 +20,41 @@ export default function Navbar() {
   const [open, setOpen] = useState(false)
 
   useEffect(() => {
-    const onScroll = () => {
-      setScrolled(window.scrollY > 40)
-      const sections = navItems.map(n => n.href.slice(1))
-      for (const id of [...sections].reverse()) {
-        const el = document.getElementById(id)
-        if (el && window.scrollY >= el.offsetTop - 120) {
-          setActive(`#${id}`)
-          break
-        }
-      }
-    }
+    const onScroll = () => setScrolled(window.scrollY > 40)
+    onScroll()
     window.addEventListener('scroll', onScroll, { passive: true })
-    return () => window.removeEventListener('scroll', onScroll)
+
+    // Scroll-spy pakai IntersectionObserver (tanpa membaca offsetTop => tidak ada forced reflow)
+    const io = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((e) => {
+          if (e.isIntersecting) setActive(`#${e.target.id}`)
+        })
+      },
+      { rootMargin: '-45% 0px -50% 0px' },
+    )
+    navItems.forEach(({ href }) => {
+      const el = document.getElementById(href.slice(1))
+      if (el) io.observe(el)
+    })
+
+    return () => {
+      window.removeEventListener('scroll', onScroll)
+      io.disconnect()
+    }
   }, [])
 
-  const scrollTo = (href) => {
-    setOpen(false)
-    const id = href.slice(1)
-    document.getElementById(id)?.scrollIntoView({ behavior: 'smooth' })
-  }
+  // Tutup menu mobile dengan tombol Esc
+  useEffect(() => {
+    if (!open) return
+    const onKey = (e) => e.key === 'Escape' && setOpen(false)
+    document.addEventListener('keydown', onKey)
+    return () => document.removeEventListener('keydown', onKey)
+  }, [open])
 
   return (
     <motion.nav
+      aria-label="Navigasi utama"
       initial={{ y: -80, opacity: 0 }}
       animate={{ y: 0, opacity: 1 }}
       transition={{ duration: 0.6, ease: 'easeOut' }}
@@ -54,50 +66,56 @@ export default function Navbar() {
     >
       <div className="max-w-7xl mx-auto px-6 lg:px-8 h-16 flex items-center justify-between">
         {/* Logo */}
-        <motion.button
-          onClick={() => scrollTo('#hero')}
+        <a
+          href="#hero"
+          onClick={() => setOpen(false)}
+          aria-label="Ashafa Multazam, kembali ke beranda"
           className="flex items-center gap-2.5 group"
-          whileHover={{ scale: 1.02 }}
         >
           <div className="w-8 h-8 rounded bg-teal-500/10 border border-teal-500/30 flex items-center justify-center group-hover:border-teal-400 transition-colors">
-            <Database className="w-4 h-4 text-teal-400" />
+            <Database className="w-4 h-4 text-teal-400" aria-hidden="true" />
           </div>
           <span className="font-display font-700 text-sm text-slate-100 hidden sm:block">
             Ashafa<span className="text-teal-400">.dev</span>
           </span>
-        </motion.button>
+        </a>
 
         {/* Desktop Nav */}
         <div className="hidden lg:flex items-center gap-7">
           {navItems.map(({ label, href }) => (
-            <button
+            <a
               key={href}
-              onClick={() => scrollTo(href)}
+              href={href}
+              aria-current={active === href ? 'true' : undefined}
               className={`nav-link ${active === href ? 'active' : ''}`}
             >
               {label}
-            </button>
+            </a>
           ))}
         </div>
 
         {/* CTA */}
         <div className="hidden lg:flex items-center gap-3">
           <a
-          href={GMAIL_LINK}
-          target="_blank"
-          rel="noreferrer"
-          className="btn-primary text-sm mt-2 justify-center"
+            href={GMAIL_LINK}
+            target="_blank"
+            rel="noreferrer"
+            className="btn-primary text-sm justify-center"
           >
             Hubungi Saya
-            </a>
+          </a>
         </div>
 
         {/* Mobile toggle */}
         <button
+          type="button"
           onClick={() => setOpen(!open)}
-          className="lg:hidden w-9 h-9 flex items-center justify-center rounded border border-teal-500/20 text-teal-400 hover:border-teal-400 transition-colors"
+          aria-label={open ? 'Tutup menu navigasi' : 'Buka menu navigasi'}
+          aria-expanded={open}
+          aria-controls="mobile-menu"
+          className="lg:hidden w-10 h-10 flex items-center justify-center rounded border border-teal-500/20 text-teal-400 hover:border-teal-400 transition-colors"
         >
-          {open ? <X className="w-4 h-4" /> : <Menu className="w-4 h-4" />}
+          {open ? <X className="w-4 h-4" aria-hidden="true" /> : <Menu className="w-4 h-4" aria-hidden="true" />}
         </button>
       </div>
 
@@ -105,6 +123,7 @@ export default function Navbar() {
       <AnimatePresence>
         {open && (
           <motion.div
+            id="mobile-menu"
             initial={{ opacity: 0, y: -10 }}
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -10 }}
@@ -112,9 +131,11 @@ export default function Navbar() {
           >
             <div className="px-6 py-4 flex flex-col gap-1">
               {navItems.map(({ label, href }) => (
-                <button
+                <a
                   key={href}
-                  onClick={() => scrollTo(href)}
+                  href={href}
+                  onClick={() => setOpen(false)}
+                  aria-current={active === href ? 'true' : undefined}
                   className={`text-left py-2.5 px-3 rounded text-sm font-body font-500 transition-colors ${
                     active === href
                       ? 'text-teal-400 bg-teal-500/5'
@@ -122,16 +143,16 @@ export default function Navbar() {
                   }`}
                 >
                   {label}
-                </button>
+                </a>
               ))}
               <a
-              href={GMAIL_LINK}
-              target="_blank"
-              rel="noreferrer"
-              className="btn-primary text-xs py-2 px-4"
+                href={GMAIL_LINK}
+                target="_blank"
+                rel="noreferrer"
+                className="btn-primary text-xs py-2 px-4 justify-center mt-2"
               >
                 Hubungi Saya
-                </a>
+              </a>
             </div>
           </motion.div>
         )}

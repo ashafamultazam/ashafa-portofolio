@@ -1,13 +1,11 @@
 import { useState } from 'react'
 import { motion } from 'framer-motion'
-import { Mail, Phone, MapPin, Send, Loader2, MessageCircle, Github, Linkedin } from 'lucide-react'
-import Swal from 'sweetalert2'
+import { Mail, Phone, MapPin, Send, MessageCircle, Github, Linkedin } from 'lucide-react'
 import Comments from './Comments'
 import { PERSONAL, GMAIL_LINK  } from '../data/portfolio'
 
 export default function Contact() {
   const [form, setForm] = useState({ name: '', email: '', subject: '', message: '' })
-  const [submitting, setSubmitting] = useState(false)
   const [errors, setErrors] = useState({})
 
   const validate = () => {
@@ -20,35 +18,37 @@ export default function Contact() {
     return Object.keys(e).length === 0
   }
 
+  // Dulu hanya simulasi (setTimeout) lalu menampilkan "Pesan Terkirim" padahal tidak ada pesan yang terkirim.
+  // Sekarang membuka aplikasi email pengunjung dengan isi yang sudah terisi, jadi pesan benar-benar sampai.
+  // Mau kirim langsung tanpa membuka email? Ganti dengan Web3Forms / Formspree / EmailJS.
   const handleSubmit = async (e) => {
     e.preventDefault()
     if (!validate()) return
-    setSubmitting(true)
-    // Simulate sending (integrate with EmailJS or Supabase)
-    await new Promise(r => setTimeout(r, 1500))
-    setSubmitting(false)
+    const subject = form.subject.trim() || `Pesan dari ${form.name.trim()}`
+    const body = `${form.message.trim()}\n\n— ${form.name.trim()} (${form.email.trim()})`
+    window.location.href = `mailto:${PERSONAL.email}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`
+
+    const { default: Swal } = await import('sweetalert2')
+    Swal.fire({
+      title: 'Aplikasi email dibuka',
+      text: 'Tinggal tekan Kirim di aplikasi email Anda. Terima kasih!',
+      icon: 'info',
+      confirmButtonText: 'Oke',
+    })
     setForm({ name: '', email: '', subject: '', message: '' })
     setErrors({})
-    Swal.fire({
-      title: 'Pesan Terkirim! 🎉',
-      html: `Terima kasih <b>${form.name}</b>! Saya akan membalas pesan Anda secepatnya.`,
-      icon: 'success',
-      confirmButtonText: 'Oke!',
-      timer: 4000,
-      timerProgressBar: true,
-    })
   }
 
   const contactItems = [
     { icon: Mail, label: 'Email', value: PERSONAL.email, href: GMAIL_LINK, color: 'teal' },
-    { icon: Phone, label: 'WhatsApp', value: PERSONAL.phone, href: `https://wa.me/6283130691888`, color: 'teal' },
+    { icon: Phone, label: 'WhatsApp', value: PERSONAL.phone, href: `https://wa.me/${PERSONAL.phone.replace(/\D/g, '')}`, color: 'teal' },
     { icon: MapPin, label: 'Lokasi', value: PERSONAL.location, href: null, color: 'amber' },
     { icon: Linkedin, label: 'LinkedIn', value: 'Ashafamultazam', href: PERSONAL.linkedin, color: 'teal' },
     { icon: Github, label: 'GitHub', value: 'Ashafamultazam', href: PERSONAL.github, color: 'amber' },
   ]
 
   return (
-    <section id="contact" className="section-base relative overflow-hidden">
+    <section className="section-base relative overflow-hidden">
       {/* Decorative */}
       <div className="absolute top-0 left-1/2 w-[600px] h-[600px] bg-teal-500/3 rounded-full blur-3xl -translate-x-1/2" />
 
@@ -56,7 +56,7 @@ export default function Contact() {
         {/* Header */}
         <div className="flex items-center gap-4 mb-14" data-aos="fade-right">
           <div className="w-10 h-10 rounded-lg bg-teal-500/10 border border-teal-500/20 flex items-center justify-center">
-            <Mail className="w-5 h-5 text-teal-400" />
+            <Mail className="w-5 h-5 text-teal-400" aria-hidden="true" />
           </div>
           <div>
             <p className="font-mono text-xs text-teal-500 tracking-widest mb-0.5">07 / CONTACT</p>
@@ -86,10 +86,10 @@ export default function Contact() {
                       ? 'bg-teal-500/10 border border-teal-500/20'
                       : 'bg-amber-500/10 border border-amber-500/20'
                   }`}>
-                    <Icon className={`w-4 h-4 ${color === 'teal' ? 'text-teal-400' : 'text-amber-400'}`} />
+                    <Icon className={`w-4 h-4 ${color === 'teal' ? 'text-teal-400' : 'text-amber-400'}`} aria-hidden="true" />
                   </div>
                   <div>
-                    <p className="text-xs text-slate-600 font-mono">{label}</p>
+                    <p className="text-xs text-slate-400 font-mono">{label}</p>
                     {href ? (
                       <a href={href} target="_blank" rel="noreferrer"
                         className="text-slate-300 text-sm hover:text-teal-400 transition-colors">
@@ -118,67 +118,67 @@ export default function Contact() {
 
           {/* Right: Form */}
           <div data-aos="fade-left">
-            <form onSubmit={handleSubmit} className="glass rounded-xl border border-slate-700/30 p-6 space-y-4">
+            <form onSubmit={handleSubmit} noValidate className="glass rounded-xl border border-slate-700/30 p-6 space-y-4">
               <div className="grid grid-cols-2 gap-4">
                 <div>
-                  <label className="block text-xs font-mono text-slate-500 mb-1.5 tracking-wide">NAMA *</label>
+                  <label htmlFor="contact-name" className="block text-xs font-mono text-slate-400 mb-1.5 tracking-wide">NAMA *</label>
                   <input
+                    id="contact-name" name="name" autoComplete="name" required aria-invalid={!!errors.name} aria-describedby={errors.name ? 'contact-name-err' : undefined}
                     type="text"
                     value={form.name}
                     onChange={e => setForm({ ...form, name: e.target.value })}
                     placeholder="Nama Anda"
-                    className={`w-full bg-navy-900/50 rounded-lg px-3 py-2.5 text-sm text-slate-200 placeholder-slate-600 border transition-colors outline-none focus:border-teal-500/50 ${
+                    className={`w-full bg-navy-900/50 rounded-lg px-3 py-2.5 text-sm text-slate-200 placeholder-slate-500 border transition-colors outline-none focus:border-teal-500/50 ${
                       errors.name ? 'border-red-500/40' : 'border-slate-700/40'
                     }`}
                   />
-                  {errors.name && <p className="text-red-400 text-xs mt-1">{errors.name}</p>}
+                  {errors.name && <p id="contact-name-err" role="alert" className="text-red-400 text-xs mt-1">{errors.name}</p>}
                 </div>
                 <div>
-                  <label className="block text-xs font-mono text-slate-500 mb-1.5 tracking-wide">EMAIL *</label>
+                  <label htmlFor="contact-email" className="block text-xs font-mono text-slate-400 mb-1.5 tracking-wide">EMAIL *</label>
                   <input
+                    id="contact-email" name="email" autoComplete="email" required aria-invalid={!!errors.email} aria-describedby={errors.email ? 'contact-email-err' : undefined}
                     type="email"
                     value={form.email}
                     onChange={e => setForm({ ...form, email: e.target.value })}
                     placeholder="email@contoh.com"
-                    className={`w-full bg-navy-900/50 rounded-lg px-3 py-2.5 text-sm text-slate-200 placeholder-slate-600 border transition-colors outline-none focus:border-teal-500/50 ${
+                    className={`w-full bg-navy-900/50 rounded-lg px-3 py-2.5 text-sm text-slate-200 placeholder-slate-500 border transition-colors outline-none focus:border-teal-500/50 ${
                       errors.email ? 'border-red-500/40' : 'border-slate-700/40'
                     }`}
                   />
-                  {errors.email && <p className="text-red-400 text-xs mt-1">{errors.email}</p>}
+                  {errors.email && <p id="contact-email-err" role="alert" className="text-red-400 text-xs mt-1">{errors.email}</p>}
                 </div>
               </div>
 
               <div>
-                <label className="block text-xs font-mono text-slate-500 mb-1.5 tracking-wide">SUBJEK</label>
+                <label htmlFor="contact-subject" className="block text-xs font-mono text-slate-400 mb-1.5 tracking-wide">SUBJEK</label>
                 <input
+                  id="contact-subject" name="subject"
                   type="text"
                   value={form.subject}
                   onChange={e => setForm({ ...form, subject: e.target.value })}
                   placeholder="Perihal pesan Anda"
-                  className="w-full bg-navy-900/50 rounded-lg px-3 py-2.5 text-sm text-slate-200 placeholder-slate-600 border border-slate-700/40 transition-colors outline-none focus:border-teal-500/50"
+                  className="w-full bg-navy-900/50 rounded-lg px-3 py-2.5 text-sm text-slate-200 placeholder-slate-500 border border-slate-700/40 transition-colors outline-none focus:border-teal-500/50"
                 />
               </div>
 
               <div>
-                <label className="block text-xs font-mono text-slate-500 mb-1.5 tracking-wide">PESAN *</label>
+                <label htmlFor="contact-message" className="block text-xs font-mono text-slate-400 mb-1.5 tracking-wide">PESAN *</label>
                 <textarea
+                  id="contact-message" name="message" required aria-invalid={!!errors.message} aria-describedby={errors.message ? 'contact-message-err' : undefined}
                   rows={5}
                   value={form.message}
                   onChange={e => setForm({ ...form, message: e.target.value })}
                   placeholder="Tulis pesan Anda..."
-                  className={`w-full bg-navy-900/50 rounded-lg px-3 py-2.5 text-sm text-slate-200 placeholder-slate-600 border transition-colors outline-none focus:border-teal-500/50 resize-none ${
+                  className={`w-full bg-navy-900/50 rounded-lg px-3 py-2.5 text-sm text-slate-200 placeholder-slate-500 border transition-colors outline-none focus:border-teal-500/50 resize-none ${
                     errors.message ? 'border-red-500/40' : 'border-slate-700/40'
                   }`}
                 />
-                {errors.message && <p className="text-red-400 text-xs mt-1">{errors.message}</p>}
+                {errors.message && <p id="contact-message-err" role="alert" className="text-red-400 text-xs mt-1">{errors.message}</p>}
               </div>
 
-              <button type="submit" disabled={submitting} className="btn-primary w-full justify-center disabled:opacity-60">
-                {submitting ? (
-                  <><Loader2 className="w-4 h-4 animate-spin" /> Mengirim...</>
-                ) : (
-                  <><Send className="w-4 h-4" /> Kirim Pesan</>
-                )}
+              <button type="submit" className="btn-primary w-full justify-center">
+                <Send className="w-4 h-4" aria-hidden="true" /> Kirim Pesan
               </button>
             </form>
           </div>
@@ -187,7 +187,7 @@ export default function Contact() {
         {/* Comment section */}
         <div className="border-t border-slate-800 pt-12" data-aos="fade-up">
           <div className="flex items-center gap-3 mb-10">
-            <MessageCircle className="w-5 h-5 text-teal-400" />
+            <MessageCircle className="w-5 h-5 text-teal-400" aria-hidden="true" />
             <h3 className="font-display font-700 text-2xl text-slate-100">Tamu & Komentar</h3>
             <div className="flex-1 h-px bg-gradient-to-r from-teal-500/20 to-transparent ml-2" />
           </div>

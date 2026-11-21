@@ -21,12 +21,12 @@ function IconBox({ children }) {
 function Meta({ period, location }) {
   return (
     <div className="flex flex-wrap gap-3 mt-2">
-      <div className="flex items-center gap-1.5 text-slate-500 text-xs">
+      <div className="flex items-center gap-1.5 text-slate-400 text-xs">
         <Calendar className="w-3 h-3" />
         <span className="font-mono">{period}</span>
       </div>
       {location && (
-        <div className="flex items-center gap-1.5 text-slate-500 text-xs">
+        <div className="flex items-center gap-1.5 text-slate-400 text-xs">
           <MapPin className="w-3 h-3" />
           <span>{location}</span>
         </div>
@@ -42,7 +42,7 @@ function ColumnTitle({ icon: Icon, title, note }) {
         <Icon className="w-4 h-4 text-teal-400" />
         <h3 className="font-display font-600 text-lg text-slate-100">{title}</h3>
       </div>
-      {note && <p className="text-slate-500 text-xs mt-1 ml-[26px]">{note}</p>}
+      {note && <p className="text-slate-400 text-xs mt-1 ml-[26px]">{note}</p>}
     </div>
   )
 }
@@ -97,8 +97,10 @@ function OrgCard({ org, delay }) {
       {org.events?.length > 0 && (
         <div className="mt-3">
           <button
+            type="button"
+            aria-expanded={open}
             onClick={() => setOpen(!open)}
-            className="flex items-center gap-1.5 text-xs text-slate-500 hover:text-teal-400 transition-colors"
+            className="flex items-center gap-1.5 text-xs text-slate-400 hover:text-teal-400 transition-colors"
           >
             {open ? <ChevronUp className="w-3 h-3" /> : <ChevronDown className="w-3 h-3" />}
             {open ? 'Sembunyikan' : `Lihat ${org.events.length} kegiatan`}

@@ -17,32 +17,33 @@ export default function Footer() {
             </div>
             <div>
               <p className="font-display font-700 text-sm text-slate-200">Ashafa Multazam</p>
-              <p className="font-mono text-xs text-slate-600">Data Analyst</p>
+              <p className="font-mono text-xs text-slate-400">Data Analyst</p>
             </div>
           </div>
 
           {/* Center text */}
-          <p className="text-slate-600 text-xs font-mono text-center">
+          <p className="text-slate-400 text-xs font-mono text-center">
             © {year} Ashafa Multazam — Built with{' '}
-            <Heart className="inline w-3 h-3 text-red-400 mx-0.5" />
+            <Heart className="inline w-3 h-3 text-red-400 mx-0.5" aria-label="cinta" role="img" />
             using React + Supabase
           </p>
 
           {/* Social */}
           <div className="flex items-center gap-3">
             {[
-              { icon: Github, href: PERSONAL.github },
-              { icon: Linkedin, href: PERSONAL.linkedin },
-              { icon: Mail, href: GMAIL_LINK },
-            ].map(({ icon: Icon, href }, i) => (
+              { icon: Github, href: PERSONAL.github, label: 'GitHub Ashafa Multazam' },
+              { icon: Linkedin, href: PERSONAL.linkedin, label: 'LinkedIn Ashafa Multazam' },
+              { icon: Mail, href: GMAIL_LINK, label: 'Kirim email ke Ashafa Multazam' },
+            ].map(({ icon: Icon, href, label }) => (
               <a
-                key={i}
+                key={label}
                 href={href}
+                aria-label={label}
                 target="_blank"
                 rel="noreferrer"
-                className="w-8 h-8 glass rounded border border-slate-700/40 flex items-center justify-center text-slate-500 hover:text-teal-400 hover:border-teal-500/30 transition-all"
+                className="w-8 h-8 glass rounded border border-slate-700/40 flex items-center justify-center text-slate-400 hover:text-teal-400 hover:border-teal-500/30 transition-all"
               >
-                <Icon className="w-3.5 h-3.5" />
+                <Icon className="w-3.5 h-3.5" aria-hidden="true" />
               </a>
             ))}
           </div>
@@ -51,8 +52,9 @@ export default function Footer() {
         {/* Back to top */}
         <div className="flex justify-center mt-6">
           <button
+            type="button"
             onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
-            className="flex items-center gap-2 text-xs font-mono text-slate-600 hover:text-teal-400 transition-colors"
+            className="flex items-center gap-2 text-xs font-mono text-slate-400 hover:text-teal-400 transition-colors"
           >
             ↑ Kembali ke atas
           </button>

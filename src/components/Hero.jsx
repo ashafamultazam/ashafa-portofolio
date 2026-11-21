@@ -49,6 +49,7 @@ export default function Hero() {
   useEffect(() => {
     const canvas = canvasRef.current
     if (!canvas) return
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return
     const ctx = canvas.getContext('2d')
     let w = canvas.width = window.innerWidth
     let h = canvas.height = window.innerHeight
@@ -103,7 +104,7 @@ export default function Hero() {
   return (
     <section id="hero" className="relative min-h-screen flex items-center overflow-hidden">
       {/* Canvas particles */}
-      <canvas ref={canvasRef} className="absolute inset-0 pointer-events-none" />
+      <canvas ref={canvasRef} aria-hidden="true" className="absolute inset-0 pointer-events-none" />
 
       {/* Grid background */}
       <div className="absolute inset-0 bg-grid-pattern bg-grid opacity-40" />
@@ -135,7 +136,7 @@ export default function Hero() {
               transition={{ delay: 0.3, duration: 0.7 }}
             >
               <p className="font-mono text-teal-500 text-sm mb-2 tracking-widest">
-                <span className="text-slate-500">// </span>Hello, I am
+                <span className="text-slate-400">// </span>Hello, I am
               </p>
               <h1 className="font-display font-800 text-5xl lg:text-6xl xl:text-7xl leading-tight text-slate-50">
                 Ashafa Multazam
@@ -169,9 +170,9 @@ export default function Hero() {
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               transition={{ delay: 0.65 }}
-              className="flex items-center gap-2 text-slate-500 text-sm"
+              className="flex items-center gap-2 text-slate-400 text-sm"
             >
-              <MapPin className="w-3.5 h-3.5 text-teal-500" />
+              <MapPin className="w-3.5 h-3.5 text-teal-500" aria-hidden="true" />
               <span className="font-mono">{PERSONAL.location}</span>
             </motion.div>
 
@@ -182,12 +183,12 @@ export default function Hero() {
               transition={{ delay: 0.7 }}
               className="flex flex-wrap gap-3 pt-2"
             >
-              <a href="#projects" onClick={e => { e.preventDefault(); document.getElementById('projects')?.scrollIntoView({ behavior: 'smooth' }) }} className="btn-primary">
+              <a href="#projects" className="btn-primary">
                 <span>Lihat Proyek</span>
-                <ChevronRight className="w-4 h-4" />
+                <ChevronRight className="w-4 h-4" aria-hidden="true" />
               </a>
-              <a href="#contact" onClick={e => { e.preventDefault(); document.getElementById('contact')?.scrollIntoView({ behavior: 'smooth' }) }} className="btn-outline">
-                <Mail className="w-4 h-4" />
+              <a href="#contact" className="btn-outline">
+                <Mail className="w-4 h-4" aria-hidden="true" />
                 <span>Kontak Saya</span>
               </a>
             </motion.div>
@@ -210,12 +211,13 @@ export default function Hero() {
                   target="_blank"
                   rel="noreferrer"
                   className="w-9 h-9 glass rounded border border-slate-700/50 flex items-center justify-center text-slate-400 hover:text-teal-400 hover:border-teal-500/30 transition-all"
+                  aria-label={label}
                   title={label}
                 >
-                  <Icon className="w-4 h-4" />
+                  <Icon className="w-4 h-4" aria-hidden="true" />
                 </a>
               ))}
-              <span className="text-slate-600 text-xs font-mono ml-1">connect with me</span>
+              <span className="text-slate-400 text-xs font-mono ml-1">connect with me</span>
             </motion.div>
           </div>
 
@@ -236,7 +238,7 @@ export default function Hero() {
                 <div className="w-3 h-3 rounded-full bg-red-500/60" />
                 <div className="w-3 h-3 rounded-full bg-amber-500/60" />
                 <div className="w-3 h-3 rounded-full bg-teal-500/60" />
-                <span className="ml-3 font-mono text-xs text-slate-500">data_profile.json</span>
+                <span className="ml-3 font-mono text-xs text-slate-400">data_profile.json</span>
               </div>
 
               {/* Terminal content */}
@@ -258,7 +260,7 @@ export default function Hero() {
                       {inView && <CountUp end={value} decimals={decimals || 0} duration={2} />}
                       {suffix}
                     </p>
-                    <p className="text-xs text-slate-500 mt-1">{label}</p>
+                    <p className="text-xs text-slate-400 mt-1">{label}</p>
                   </div>
                 ))}
               </div>
@@ -271,7 +273,7 @@ export default function Hero() {
                   { label: 'Data Visualization', val: 78 },
                 ].map(({ label, val }) => (
                   <div key={label}>
-                    <div className="flex justify-between text-xs text-slate-500 mb-1">
+                    <div className="flex justify-between text-xs text-slate-400 mb-1">
                       <span>{label}</span>
                       <span>{val}%</span>
                     </div>
@@ -292,18 +294,20 @@ export default function Hero() {
 
         {/* Scroll indicator */}
         <motion.button
+          type="button"
+          aria-label="Gulir ke bagian Tentang Saya"
           onClick={scrollDown}
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ delay: 1.2 }}
-          className="absolute bottom-8 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2 text-slate-600 hover:text-teal-400 transition-colors"
+          className="absolute bottom-8 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2 text-slate-400 hover:text-teal-400 transition-colors"
         >
           <span className="font-mono text-xs tracking-widest">SCROLL</span>
           <motion.div
             animate={{ y: [0, 6, 0] }}
             transition={{ repeat: Infinity, duration: 1.5 }}
           >
-            <ArrowDown className="w-4 h-4" />
+            <ArrowDown className="w-4 h-4" aria-hidden="true" />
           </motion.div>
         </motion.button>
       </div>

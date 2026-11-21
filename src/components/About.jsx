@@ -10,7 +10,8 @@ import { PERSONAL, EDUCATION, CERTIFICATIONS, PROJECTS } from '../data/portfolio
      'arch'   → top rounded like a doorway (default)
      'circle' → round photo
      'cutout' → no frame; use a PNG with transparent background */
-const PHOTO_FILE = 'AshafaMultazam.jpg'
+const PHOTO_FILE = 'AshafaMultazam-640.jpg'   // JPG cadangan (640px)
+const PHOTO_WEBP = 'AshafaMultazam.webp'      // versi WebP (lebih kecil), dipakai browser modern
 const PHOTO_SHAPE = 'arch'
 const CV_FILE = 'CV-Ashafa-Multazam.pdf'
 const HEADLINE = 'Mengubah data mentah menjadi keputusan yang bisa ditindaklanjuti.'
@@ -47,6 +48,7 @@ const stats = [
 
 export default function About() {
   const photoSrc = `${BASE}${PHOTO_FILE}`
+  const photoWebp = `${BASE}${PHOTO_WEBP}`
 
   return (
     <section id="about" className="section-base relative overflow-hidden">
@@ -73,21 +75,35 @@ export default function About() {
               <div className={`relative w-64 sm:w-72 ${shape.box}`}>
                 {shape.framed ? (
                   <div className="absolute inset-0 overflow-hidden rounded-[inherit] border border-teal-500/30 glow-teal-sm bg-navy-800">
-                    <img
-                      src={photoSrc}
-                      alt={`Foto ${PERSONAL.name}`}
-                      className="w-full h-full object-cover object-top"
-                    />
+                    <picture>
+                      <source srcSet={photoWebp} type="image/webp" />
+                      <img
+                        src={photoSrc}
+                        alt={`Foto ${PERSONAL.name}`}
+                        width={640}
+                        height={926}
+                        loading="lazy"
+                        decoding="async"
+                        className="w-full h-full object-cover object-top"
+                      />
+                    </picture>
                   </div>
                 ) : (
                   <>
                     <div className="absolute inset-x-4 top-12 bottom-0 rounded-full bg-teal-500/20 blur-3xl" />
-                    <img
-                      src={photoSrc}
-                      alt={`Foto ${PERSONAL.name}`}
-                      className="relative w-full h-full object-contain object-bottom"
-                      style={{ WebkitMaskImage: fadeMask, maskImage: fadeMask }}
-                    />
+                    <picture>
+                      <source srcSet={photoWebp} type="image/webp" />
+                      <img
+                        src={photoSrc}
+                        alt={`Foto ${PERSONAL.name}`}
+                        width={640}
+                        height={926}
+                        loading="lazy"
+                        decoding="async"
+                        className="relative w-full h-full object-contain object-bottom"
+                        style={{ WebkitMaskImage: fadeMask, maskImage: fadeMask }}
+                      />
+                    </picture>
                   </>
                 )}
 
@@ -111,7 +127,7 @@ export default function About() {
                 {stats.map(({ value, label }) => (
                   <div key={label} className="glass rounded-xl py-3 text-center">
                     <div className="font-display font-700 text-xl gradient-text">{value}</div>
-                    <div className="text-xs text-slate-500 mt-0.5">{label}</div>
+                    <div className="text-xs text-slate-400 mt-0.5">{label}</div>
                   </div>
                 ))}
               </div>

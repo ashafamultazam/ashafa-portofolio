@@ -1,82 +1,61 @@
 import { motion } from 'framer-motion'
 import { Zap } from 'lucide-react'
-import { useInView } from 'react-intersection-observer'
-import { SKILLS } from '../data/portfolio'
+import {
+  SiPostgresql, SiGooglebigquery, SiPython, SiPandas, SiNumpy,
+  SiGooglecolab, SiLooker, SiGithub,
+} from 'react-icons/si'
+import { FaDatabase, FaFileExcel, FaFilePowerpoint } from 'react-icons/fa'
+import { PowerBiIcon, CanvaIcon, MatplotlibIcon } from './BrandIcons'
+import { TECH_GROUPS, SOFT_SKILLS } from '../data/portfolio'
 
-function SkillCard({ category, icon, color, items, delay }) {
-  const { ref, inView } = useInView({ threshold: 0.3, triggerOnce: true })
-  const isTeal = color === 'teal'
-
-  return (
-    <motion.div
-      ref={ref}
-      initial={{ opacity: 0, y: 30 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true }}
-      transition={{ delay, duration: 0.5 }}
-      className="glass glass-hover rounded-xl p-6 card-lift border border-slate-700/30"
-    >
-      <div className="flex items-center gap-3 mb-6">
-        <span className="text-2xl">{icon}</span>
-        <h3 className="font-display font-600 text-base text-slate-200">{category}</h3>
-      </div>
-      <div className="space-y-4">
-        {items.map(({ name, level }) => (
-          <div key={name}>
-            <div className="flex justify-between text-sm mb-1.5">
-              <span className="text-slate-400">{name}</span>
-              <span className={`font-mono text-xs ${isTeal ? 'text-teal-400' : 'text-amber-400'}`}>
-                {level}%
-              </span>
-            </div>
-            <div className="skill-bar-track">
-              <motion.div
-                className={`h-full rounded-full origin-left ${
-                  isTeal
-                    ? 'bg-gradient-to-r from-teal-600 to-teal-400'
-                    : 'bg-gradient-to-r from-amber-600 to-amber-400'
-                }`}
-                style={{ height: '4px' }}
-                initial={{ width: 0 }}
-                animate={inView ? { width: `${level}%` } : {}}
-                transition={{ delay: 0.2, duration: 1.2, ease: [0.23, 1, 0.32, 1] }}
-              />
-            </div>
-          </div>
-        ))}
-      </div>
-    </motion.div>
-  )
+// Warna merek dipakai supaya logo mudah dikenali di background gelap.
+const ICONS = {
+  sql: { Icon: FaDatabase, color: '#38BDF8' },
+  postgresql: { Icon: SiPostgresql, color: '#6B9BD1' },
+  bigquery: { Icon: SiGooglebigquery, color: '#669DF6' },
+  python: { Icon: SiPython, color: '#FFD43B' },
+  pandas: { Icon: SiPandas, color: '#E6E6FA' },
+  numpy: { Icon: SiNumpy, color: '#6FB7F0' },
+  matplotlib: { Icon: MatplotlibIcon },
+  colab: { Icon: SiGooglecolab, color: '#F9AB00' },
+  powerbi: { Icon: PowerBiIcon },
+  looker: { Icon: SiLooker, color: '#A78BFA' },
+  excel: { Icon: FaFileExcel, color: '#21A366' },
+  github: { Icon: SiGithub, color: '#F1F5F9' },
+  powerpoint: { Icon: FaFilePowerpoint, color: '#F26B3A' },
+  canva: { Icon: CanvaIcon },
 }
 
-const techStack = [
-  { name: 'SQL', color: '#14B8A6' },
-  { name: 'Python', color: '#3B82F6' },
-  { name: 'BigQuery', color: '#F59E0B' },
-  { name: 'PostgreSQL', color: '#6366F1' },
-  { name: 'Looker Studio', color: '#10B981' },
-  { name: 'Pandas', color: '#14B8A6' },
-  { name: 'NumPy', color: '#F59E0B' },
-  { name: 'Google Colab', color: '#F59E0B' },
-  { name: 'Excel (IF, XLOOKUP, Match, Index)', color: '#22C55E' },
-  { name: 'Power Point', color: '#EF4444' },
-  { name: 'GitHub', color: '#94A3B8' },
-  { name: 'Matplotlib', color: '#8B5CF6' },
-  { name: 'Power BI', color: '#EF4444' },
-  { name: 'Canva', color: '#3B82F6' },
-
-]
+function TechItem({ name, icon, index }) {
+  const { Icon, color } = ICONS[icon]
+  return (
+    <motion.li
+      initial={{ opacity: 0, y: 12 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true }}
+      transition={{ delay: index * 0.05, duration: 0.4 }}
+      whileHover={{ y: -4 }}
+      className="glass glass-hover rounded-xl w-[104px] py-4 px-2 flex flex-col items-center gap-3 border border-slate-700/30 transition-colors"
+    >
+      {/* Ukuran sedang: 48px (w-12). Ubah ke w-10 (lebih kecil) atau w-14 (lebih besar) */}
+      <Icon className="w-12 h-12" style={color ? { color } : undefined} aria-hidden="true" />
+      <span className="text-xs sm:text-[13px] text-slate-300 text-center leading-tight font-medium">
+        {name}
+      </span>
+    </motion.li>
+  )
+}
 
 export default function Skills() {
   return (
     <section id="skills" className="section-base relative overflow-hidden">
-      <div className="absolute bottom-0 right-0 w-[500px] h-[500px] bg-amber-500/3 rounded-full blur-3xl" />
+      <div className="absolute bottom-0 right-0 w-[500px] h-[500px] bg-amber-500/3 rounded-full blur-3xl" aria-hidden="true" />
 
       <div className="max-w-7xl mx-auto px-6 lg:px-8">
         {/* Header */}
         <div className="flex items-center gap-4 mb-14" data-aos="fade-right">
           <div className="w-10 h-10 rounded-lg bg-teal-500/10 border border-teal-500/20 flex items-center justify-center">
-            <Zap className="w-5 h-5 text-teal-400" />
+            <Zap className="w-5 h-5 text-teal-400" aria-hidden="true" />
           </div>
           <div>
             <p className="font-mono text-xs text-teal-500 tracking-widest mb-0.5">02 / SKILLS</p>
@@ -85,32 +64,37 @@ export default function Skills() {
           <div className="flex-1 h-px bg-gradient-to-r from-teal-500/20 to-transparent ml-4" />
         </div>
 
-        {/* Skills grid */}
-        <div className="grid sm:grid-cols-2 xl:grid-cols-4 gap-5 mb-12">
-          {SKILLS.map((skill, i) => (
-            <SkillCard key={skill.category} {...skill} delay={i * 0.1} />
+        {/* Logo teknologi per kategori */}
+        <div className="grid lg:grid-cols-2 gap-x-12 gap-y-10">
+          {TECH_GROUPS.map(({ title, items }) => (
+            <div key={title} data-aos="fade-up">
+              <h3 className="font-mono text-xs text-slate-400 tracking-widest uppercase mb-4 text-center sm:text-left">
+                {title}
+              </h3>
+              <ul className="flex flex-wrap justify-center sm:justify-start gap-3">
+                {items.map((item, i) => (
+                  <TechItem key={item.name} {...item} index={i} />
+                ))}
+              </ul>
+            </div>
           ))}
         </div>
 
-        {/* Tech stack bubbles */}
-        <div data-aos="fade-up" data-aos-delay="200">
-          <p className="font-mono text-xs text-slate-600 text-center tracking-widest mb-5">TECH STACK</p>
-          <div className="flex flex-wrap justify-center gap-2.5">
-            {techStack.map(({ name, color }, i) => (
-              <motion.span
-                key={name}
-                initial={{ opacity: 0, scale: 0.8 }}
-                whileInView={{ opacity: 1, scale: 1 }}
-                viewport={{ once: true }}
-                transition={{ delay: i * 0.04 }}
-                whileHover={{ scale: 1.05, y: -2 }}
-                className="glass rounded-full px-4 py-1.5 text-sm font-mono border border-slate-700/40 transition-all"
-                style={{ color, borderColor: `${color}30` }}
+        {/* Soft skills */}
+        <div className="mt-12" data-aos="fade-up">
+          <h3 className="font-mono text-xs text-slate-400 tracking-widest uppercase mb-4 text-center sm:text-left">
+            Soft Skills
+          </h3>
+          <ul className="flex flex-wrap justify-center sm:justify-start gap-2.5">
+            {SOFT_SKILLS.map((s) => (
+              <li
+                key={s}
+                className="glass rounded-full px-4 py-1.5 text-sm text-amber-400 border border-amber-500/20"
               >
-                {name}
-              </motion.span>
+                {s}
+              </li>
             ))}
-          </div>
+          </ul>
         </div>
       </div>
     </section>

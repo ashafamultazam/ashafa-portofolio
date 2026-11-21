@@ -16,13 +16,6 @@ export const PERSONAL = {
 }
 export const GMAIL_LINK = `https://mail.google.com/mail/?view=cm&fs=1&to=${PERSONAL.email}&su=${encodeURIComponent('Halo Ashafa, saya tertarik berdiskusi')}`
 
-export const STATS = [
-  { label: 'IPK', value: 3.36, suffix: '', prefix: '', decimals: 2 },
-  { label: 'Sertifikasi', value: 12, suffix: '+', prefix: '' },
-  { label: 'Jam Bootcamp', value: 200, suffix: '+', prefix: '' },
-  { label: 'Proyek Selesai', value: 8, suffix: '+', prefix: '' },
-]
-
 export const SKILLS = [
   {
     category: 'Data & Database',
@@ -200,3 +193,53 @@ export const PROJECTS = [
     link: 'https://drive.google.com/file/d/10hv1Oix9vk2277ZK68Tg64ISGRFSk3HA/view?usp=sharing',
   },
 ]
+
+// Angka diturunkan dari data di atas, jadi selalu sama dengan yang tampil di halaman.
+// Tambah proyek/sertifikasi => angka ikut bertambah. 'Jam Bootcamp' diisi manual.
+export const STATS = [
+  { label: 'IPK', value: 3.36, suffix: '', prefix: '', decimals: 2 },
+  { label: 'Sertifikasi', value: CERTIFICATIONS.length, suffix: '', prefix: '' },
+  { label: 'Jam Bootcamp', value: 200, suffix: '+', prefix: '' },
+  { label: 'Proyek Selesai', value: PROJECTS.length, suffix: '', prefix: '' },
+]
+
+// ─── Tech stack untuk bagian Keahlian (ikon dirender di Skills.jsx) ───────────
+// `icon` = kunci di Skills.jsx > ICONS. Tambah teknologi baru cukup di sini + ICONS.
+export const TECH_GROUPS = [
+  {
+    title: 'Data & Database',
+    items: [
+      { name: 'SQL', icon: 'sql' },
+      { name: 'PostgreSQL', icon: 'postgresql' },
+      { name: 'BigQuery', icon: 'bigquery' },
+    ],
+  },
+  {
+    title: 'Programming & Analisis',
+    items: [
+      { name: 'Python', icon: 'python' },
+      { name: 'Pandas', icon: 'pandas' },
+      { name: 'NumPy', icon: 'numpy' },
+      { name: 'Matplotlib', icon: 'matplotlib' },
+      { name: 'Google Colab', icon: 'colab' },
+    ],
+  },
+  {
+    title: 'Visualisasi & BI',
+    items: [
+      { name: 'Power BI', icon: 'powerbi' },
+      { name: 'Looker Studio', icon: 'looker' },
+      { name: 'Excel', icon: 'excel' },
+    ],
+  },
+  {
+    title: 'Kolaborasi & Presentasi',
+    items: [
+      { name: 'GitHub', icon: 'github' },
+      { name: 'PowerPoint', icon: 'powerpoint' },
+      { name: 'Canva', icon: 'canva' },
+    ],
+  },
+]
+
+export const SOFT_SKILLS = ['Problem Solving', 'Team Collaboration', 'Communication', 'Leadership']

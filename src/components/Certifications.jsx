@@ -57,14 +57,14 @@ export default function Certifications() {
                 </div>
 
                 {/* Date */}
-                <div className="flex items-center gap-2 text-slate-500 text-xs mb-4">
+                <div className="flex items-center gap-2 text-slate-400 text-xs mb-4">
                   <Calendar className="w-3 h-3" />
                   <span className="font-mono">{cert.period}</span>
                 </div>
 
                 {/* Topics */}
                 <div>
-                  <div className="flex items-center gap-1.5 text-xs text-slate-600 mb-2">
+                  <div className="flex items-center gap-1.5 text-xs text-slate-400 mb-2">
                     <Tag className="w-3 h-3" />
                     <span>Topik</span>
                   </div>
@@ -109,7 +109,7 @@ export default function Certifications() {
             <div key={label}>
               <div className="text-2xl mb-1">{icon}</div>
               <div className="font-display font-700 text-2xl text-teal-400">{value}</div>
-              <div className="text-xs text-slate-500 mt-0.5">{label}</div>
+              <div className="text-xs text-slate-400 mt-0.5">{label}</div>
             </div>
           ))}
         </motion.div>

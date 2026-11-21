@@ -5,48 +5,61 @@ export default function CustomCursor() {
   const ringRef = useRef(null)
 
   useEffect(() => {
+    // Hanya untuk perangkat dengan mouse/trackpad; layar sentuh & reduced-motion dilewati
+    const fine = window.matchMedia('(hover: hover) and (pointer: fine)').matches
+    const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches
+    if (!fine || reduce) return
+
     const dot = dotRef.current
     const ring = ringRef.current
     let mouseX = 0, mouseY = 0
     let ringX = 0, ringY = 0
-    let animFrame
-
-    const moveCursor = (e) => {
-      mouseX = e.clientX
-      mouseY = e.clientY
-      dot.style.left = `${mouseX}px`
-      dot.style.top = `${mouseY}px`
-    }
+    let raf = 0
+    let running = false
 
     const animateRing = () => {
       ringX += (mouseX - ringX) * 0.12
       ringY += (mouseY - ringY) * 0.12
-      ring.style.left = `${ringX}px`
-      ring.style.top = `${ringY}px`
-      animFrame = requestAnimationFrame(animateRing)
+      ring.style.transform = `translate(${ringX}px, ${ringY}px) translate(-50%, -50%)${
+        ring.classList.contains('hovering') ? ' scale(1.6)' : ''
+      }`
+      if (Math.abs(mouseX - ringX) < 0.1 && Math.abs(mouseY - ringY) < 0.1) {
+        running = false // berhenti saat diam, hemat CPU
+        return
+      }
+      raf = requestAnimationFrame(animateRing)
     }
 
-    const addHover = () => ring.classList.add('hovering')
-    const removeHover = () => ring.classList.remove('hovering')
+    const moveCursor = (e) => {
+      mouseX = e.clientX
+      mouseY = e.clientY
+      dot.style.transform = `translate(${mouseX}px, ${mouseY}px) translate(-50%, -50%)`
+      if (!running) {
+        running = true
+        raf = requestAnimationFrame(animateRing)
+      }
+    }
 
-    document.addEventListener('mousemove', moveCursor)
-    document.querySelectorAll('a, button, [data-hover]').forEach(el => {
-      el.addEventListener('mouseenter', addHover)
-      el.addEventListener('mouseleave', removeHover)
-    })
+    // Event delegation: elemen yang muncul belakangan (lazy) tetap terdeteksi
+    const SEL = 'a, button, input, textarea, [data-hover]'
+    const onOver = (e) => ring.classList.toggle('hovering', !!e.target.closest?.(SEL))
 
-    animFrame = requestAnimationFrame(animateRing)
+    document.documentElement.classList.add('has-custom-cursor')
+    document.addEventListener('mousemove', moveCursor, { passive: true })
+    document.addEventListener('mouseover', onOver, { passive: true })
 
     return () => {
+      document.documentElement.classList.remove('has-custom-cursor')
       document.removeEventListener('mousemove', moveCursor)
-      cancelAnimationFrame(animFrame)
+      document.removeEventListener('mouseover', onOver)
+      cancelAnimationFrame(raf)
     }
   }, [])
 
   return (
     <>
-      <div ref={dotRef} className="cursor-dot hidden md:block" />
-      <div ref={ringRef} className="cursor-ring hidden md:block" />
+      <div ref={dotRef} className="cursor-dot hidden md:block" aria-hidden="true" />
+      <div ref={ringRef} className="cursor-ring hidden md:block" aria-hidden="true" />
     </>
   )
 }
