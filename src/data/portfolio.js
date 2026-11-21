@@ -1,5 +1,7 @@
 // ─── Data Portfolio Ashafa Multazam ──────────────────────────
 
+import { Link } from "lucide-react"
+
 export const PERSONAL = {
   name: 'Ashafa Multazam',
   title: 'Data Analyst',
@@ -88,6 +90,7 @@ export const CERTIFICATIONS = [
     topics: ['Data Analysis', 'Python', 'Data Visualization', 'SQL', 'Basic Statistics', 'Data Cleansing','Power BI','Google Collab'],
     badge: '🥇',
     color: 'amber',
+    Link : 'https://drive.google.com/file/d/1Xlvs3Ct9decvMifMKXS2msD485TXeH5z/view?usp=drive_link',
     highlight: true,
   },
   {
