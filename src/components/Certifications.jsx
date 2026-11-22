@@ -227,7 +227,6 @@ function CertCarousel() {
           <ChevronRight className="w-5 h-5" aria-hidden="true" />
         </button>
       </div>
-      <p className="text-center text-xs font-mono text-slate-400 mt-3">Geser, klik kartu, atau gunakan tombol panah</p>
     </div>
   )
 }

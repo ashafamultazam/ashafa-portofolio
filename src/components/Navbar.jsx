@@ -64,7 +64,7 @@ export default function Navbar() {
           : 'bg-transparent'
       }`}
     >
-      <div className="max-w-7xl mx-auto px-6 lg:px-8 h-16 flex items-center justify-between">
+      <div className="max-w-7xl mx-auto px-6 lg:px-8 h-12 flex items-center justify-between">
         {/* Logo */}
         <a
           href="#hero"
@@ -72,22 +72,22 @@ export default function Navbar() {
           aria-label="Ashafa Multazam, kembali ke beranda"
           className="flex items-center gap-2.5 group"
         >
-          <div className="w-8 h-8 rounded bg-teal-500/10 border border-teal-500/30 flex items-center justify-center group-hover:border-teal-400 transition-colors">
-            <Database className="w-4 h-4 text-teal-400" aria-hidden="true" />
+          <div className="w-7 h-7 rounded bg-teal-500/10 border border-teal-500/30 flex items-center justify-center group-hover:border-teal-400 transition-colors">
+            <Database className="w-3.5 h-3.5 text-teal-400" aria-hidden="true" />
           </div>
-          <span className="font-display font-700 text-sm text-slate-100 hidden sm:block">
+          <span className="font-display font-700 text-[13px] text-slate-100 hidden sm:block">
             Ashafa<span className="text-teal-400">.dev</span>
           </span>
         </a>
 
         {/* Desktop Nav */}
-        <div className="hidden lg:flex items-center gap-7">
+        <div className="hidden lg:flex items-center gap-6">
           {navItems.map(({ label, href }) => (
             <a
               key={href}
               href={href}
               aria-current={active === href ? 'true' : undefined}
-              className={`nav-link ${active === href ? 'active' : ''}`}
+              className={`nav-link !text-[0.78rem] ${active === href ? 'active' : ''}`}
             >
               {label}
             </a>
@@ -100,7 +100,7 @@ export default function Navbar() {
             href={GMAIL_LINK}
             target="_blank"
             rel="noreferrer"
-            className="btn-primary text-sm justify-center"
+            className="btn-primary justify-center !py-1.5 !px-4 !text-[13px]"
           >
             Hubungi Saya
           </a>

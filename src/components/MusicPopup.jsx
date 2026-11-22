@@ -72,8 +72,8 @@ export default function MusicPopup() {
           closed: { opacity: 0, scale: 0.4, x: 60, transitionEnd: { visibility: 'hidden' } },
         }}
         transition={reduce ? { duration: 0 } : { type: 'spring', stiffness: 260, damping: 26 }}
-        style={{ transformOrigin: 'bottom right' }}
-        className="music-panel fixed z-[60] right-3 bottom-[10rem] w-[min(380px,calc(100vw-1.5rem))] rounded-2xl p-4"
+        style={{ transformOrigin: 'top right' }}
+        className="music-panel fixed z-40 right-3 top-[8.75rem] w-[min(380px,calc(100vw-1.5rem))] max-h-[calc(100dvh-10rem)] overflow-y-auto rounded-2xl p-4"
       >
         <div className="flex items-start justify-between gap-3 mb-3">
           <div>
@@ -122,7 +122,7 @@ export default function MusicPopup() {
         animate={hint && !open ? { opacity: 1, x: 0 } : { opacity: 0, x: 12 }}
         transition={{ duration: reduce ? 0 : 0.35 }}
         style={{ pointerEvents: 'none' }}
-        className="fixed z-[60] right-14 bottom-[6.9rem] glass rounded-full px-3 py-1.5 text-xs font-mono text-teal-300 border border-teal-500/30 whitespace-nowrap"
+        className="fixed z-40 right-14 top-[5.5rem] glass rounded-full px-3 py-1.5 text-xs font-mono text-teal-300 border border-teal-500/30 whitespace-nowrap"
       >
         Putar musik ♪
       </motion.div>
@@ -136,7 +136,7 @@ export default function MusicPopup() {
         aria-label={open ? 'Ciutkan pemutar musik' : 'Buka pemutar musik'}
         aria-expanded={open}
         aria-controls="music-panel"
-        className="music-tab fixed z-[60] right-0 bottom-24 w-12 h-14 rounded-l-2xl flex items-center justify-center text-teal-400"
+        className="music-tab fixed z-40 right-0 top-[4.75rem] w-10 h-12 sm:w-12 sm:h-14 rounded-l-2xl flex items-center justify-center text-teal-400"
       >
         <Music2 className="w-5 h-5" aria-hidden="true" />
       </button>
