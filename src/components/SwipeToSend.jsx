@@ -20,6 +20,9 @@ export default function SwipeToSend({
   disabled = false,
   label = 'Geser untuk mengirim',
   disabledLabel = 'Tunggu sebentar…',
+  sendingLabel = 'Mengirim…',
+  doneLabel = 'Terkirim!',
+  ariaLabel = 'Kirim',
 }) {
   const trackRef = useRef(null)
   const dragged = useRef(false)
@@ -83,7 +86,7 @@ export default function SwipeToSend({
   }
 
   const busy = status !== 'idle'
-  const text = disabled ? disabledLabel : status === 'sending' ? 'Mengirim…' : status === 'done' ? 'Terkirim!' : label
+  const text = disabled ? disabledLabel : status === 'sending' ? sendingLabel : status === 'done' ? doneLabel : label
 
   return (
     <div>
@@ -121,7 +124,7 @@ export default function SwipeToSend({
         <motion.button
           type="button"
           disabled={busy || disabled}
-          aria-label="Kirim komentar. Geser ke kanan, atau tekan Enter."
+          aria-label={`${ariaLabel}. Geser ke kanan, atau tekan Enter.`}
           drag={busy || disabled ? false : 'x'}
           dragConstraints={{ left: 0, right: maxX }}
           dragElastic={0}
@@ -153,7 +156,7 @@ export default function SwipeToSend({
       </div>
 
       <p className="sr-only" role="status">
-        {status === 'sending' ? 'Mengirim komentar' : status === 'done' ? 'Komentar terkirim' : ''}
+        {status === 'sending' ? sendingLabel : status === 'done' ? doneLabel : ''}
       </p>
     </div>
   )

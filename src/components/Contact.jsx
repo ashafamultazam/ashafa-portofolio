@@ -1,43 +1,69 @@
-import { useState } from 'react'
-import { motion } from 'framer-motion'
-import { Mail, Phone, MapPin, Send, MessageCircle, Github, Linkedin } from 'lucide-react'
-import Comments from './Comments'
-import { PERSONAL, GMAIL_LINK  } from '../data/portfolio'
+import { useEffect, useState } from 'react'
+import { motion, AnimatePresence } from 'framer-motion'
+import { Mail, Phone, MapPin, Github, Linkedin, CheckCircle2 } from 'lucide-react'
+import SwipeToSend from './SwipeToSend'
+import { PERSONAL, GMAIL_LINK } from '../data/portfolio'
 
 export default function Contact() {
   const [form, setForm] = useState({ name: '', email: '', subject: '', message: '' })
   const [errors, setErrors] = useState({})
 
+  const [notice, setNotice] = useState(null)
+
+  useEffect(() => {
+    if (!notice) return
+    const t = setTimeout(() => setNotice(null), 8000)
+    return () => clearTimeout(t)
+  }, [notice])
+
+  const setField = (key) => (e) => {
+    setForm((f) => ({ ...f, [key]: e.target.value }))
+    setErrors((er) => (er[key] ? { ...er, [key]: undefined } : er))
+  }
+
   const validate = () => {
     const e = {}
     if (!form.name.trim()) e.name = 'Nama wajib diisi'
     if (!form.email.trim()) e.email = 'Email wajib diisi'
-    else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(form.email)) e.email = 'Format email tidak valid'
+    else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(form.email.trim())) e.email = 'Format email tidak valid'
     if (!form.message.trim()) e.message = 'Pesan wajib diisi'
     setErrors(e)
+    const first = ['name', 'email', 'message'].find((k) => e[k])
+    if (first) document.getElementById(`contact-${first}`)?.focus()
     return Object.keys(e).length === 0
   }
 
-  // Dulu hanya simulasi (setTimeout) lalu menampilkan "Pesan Terkirim" padahal tidak ada pesan yang terkirim.
-  // Sekarang membuka aplikasi email pengunjung dengan isi yang sudah terisi, jadi pesan benar-benar sampai.
+  // Satu-satunya form di halaman ini. Tidak butuh server:
+  // - Desktop: membuka Gmail (tab baru) dengan isi yang sudah terisi
+  // - HP: membuka aplikasi email bawaan (mailto)
   // Mau kirim langsung tanpa membuka email? Ganti dengan Web3Forms / Formspree / EmailJS.
-  const handleSubmit = async (e) => {
-    e.preventDefault()
-    if (!validate()) return
+  const send = async () => {
+    setNotice(null)
+    if (!validate()) return false
     const subject = form.subject.trim() || `Pesan dari ${form.name.trim()}`
     const body = `${form.message.trim()}\n\n— ${form.name.trim()} (${form.email.trim()})`
-    window.location.href = `mailto:${PERSONAL.email}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`
+    const mailto = `mailto:${PERSONAL.email}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`
+    const gmail = `https://mail.google.com/mail/?view=cm&fs=1&to=${encodeURIComponent(PERSONAL.email)}&su=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`
 
-    const { default: Swal } = await import('sweetalert2')
-    Swal.fire({
-      title: 'Aplikasi email dibuka',
-      text: 'Tinggal tekan Kirim di aplikasi email Anda. Terima kasih!',
-      icon: 'info',
-      confirmButtonText: 'Oke',
-    })
+    const isTouch = window.matchMedia('(pointer: coarse)').matches
+    if (isTouch) {
+      window.location.href = mailto
+      setNotice('Aplikasi email dibuka. Tekan Kirim di sana untuk menyelesaikan.')
+    } else {
+      const w = window.open(gmail, '_blank', 'noopener')
+      if (!w) window.location.href = mailto // pop-up diblokir: pakai mailto
+      setNotice('Gmail dibuka di tab baru. Tekan Kirim di sana untuk menyelesaikan.')
+    }
     setForm({ name: '', email: '', subject: '', message: '' })
     setErrors({})
+    return true
   }
+
+  // text-base di HP (16px) mencegah iOS Safari memperbesar layar otomatis saat kolom difokuskan
+  const field = (err) =>
+    `w-full bg-navy-900/50 rounded-lg px-3 py-3 text-base sm:text-sm text-slate-200 placeholder-slate-500 border transition-colors outline-none focus:border-teal-500/60 focus:shadow-[0_0_0_3px_rgba(45,212,191,0.12)] ${
+      err ? 'border-red-500/40' : 'border-slate-700/40'
+    }`
 
   const contactItems = [
     { icon: Mail, label: 'Email', value: PERSONAL.email, href: GMAIL_LINK, color: 'teal' },
@@ -65,7 +91,7 @@ export default function Contact() {
           <div className="flex-1 h-px bg-gradient-to-r from-teal-500/20 to-transparent ml-4" />
         </div>
 
-        <div className="grid lg:grid-cols-2 gap-12 mb-16">
+        <div className="grid lg:grid-cols-2 gap-12">
           {/* Left: Info */}
           <div data-aos="fade-right">
             <p className="text-slate-400 leading-relaxed mb-8">
@@ -118,33 +144,23 @@ export default function Contact() {
 
           {/* Right: Form */}
           <div data-aos="fade-left">
-            <form onSubmit={handleSubmit} noValidate className="glass rounded-xl border border-slate-700/30 p-6 space-y-4">
-              <div className="grid grid-cols-2 gap-4">
+            <form noValidate onSubmit={(e) => e.preventDefault()} className="glass rounded-xl border border-slate-700/30 p-6 space-y-4">
+              <div className="grid sm:grid-cols-2 gap-4">
                 <div>
                   <label htmlFor="contact-name" className="block text-xs font-mono text-slate-400 mb-1.5 tracking-wide">NAMA *</label>
                   <input
-                    id="contact-name" name="name" autoComplete="name" required aria-invalid={!!errors.name} aria-describedby={errors.name ? 'contact-name-err' : undefined}
-                    type="text"
-                    value={form.name}
-                    onChange={e => setForm({ ...form, name: e.target.value })}
-                    placeholder="Nama Anda"
-                    className={`w-full bg-navy-900/50 rounded-lg px-3 py-2.5 text-sm text-slate-200 placeholder-slate-500 border transition-colors outline-none focus:border-teal-500/50 ${
-                      errors.name ? 'border-red-500/40' : 'border-slate-700/40'
-                    }`}
+                    id="contact-name" name="name" type="text" autoComplete="name" autoCapitalize="words" enterKeyHint="next"
+                    maxLength={80} required aria-invalid={!!errors.name} aria-describedby={errors.name ? 'contact-name-err' : undefined}
+                    value={form.name} onChange={setField('name')} placeholder="Nama Anda" className={field(errors.name)}
                   />
                   {errors.name && <p id="contact-name-err" role="alert" className="text-red-400 text-xs mt-1">{errors.name}</p>}
                 </div>
                 <div>
                   <label htmlFor="contact-email" className="block text-xs font-mono text-slate-400 mb-1.5 tracking-wide">EMAIL *</label>
                   <input
-                    id="contact-email" name="email" autoComplete="email" required aria-invalid={!!errors.email} aria-describedby={errors.email ? 'contact-email-err' : undefined}
-                    type="email"
-                    value={form.email}
-                    onChange={e => setForm({ ...form, email: e.target.value })}
-                    placeholder="email@contoh.com"
-                    className={`w-full bg-navy-900/50 rounded-lg px-3 py-2.5 text-sm text-slate-200 placeholder-slate-500 border transition-colors outline-none focus:border-teal-500/50 ${
-                      errors.email ? 'border-red-500/40' : 'border-slate-700/40'
-                    }`}
+                    id="contact-email" name="email" type="email" inputMode="email" autoComplete="email" enterKeyHint="next"
+                    maxLength={120} required aria-invalid={!!errors.email} aria-describedby={errors.email ? 'contact-email-err' : undefined}
+                    value={form.email} onChange={setField('email')} placeholder="email@contoh.com" className={field(errors.email)}
                   />
                   {errors.email && <p id="contact-email-err" role="alert" className="text-red-400 text-xs mt-1">{errors.email}</p>}
                 </div>
@@ -153,45 +169,45 @@ export default function Contact() {
               <div>
                 <label htmlFor="contact-subject" className="block text-xs font-mono text-slate-400 mb-1.5 tracking-wide">SUBJEK</label>
                 <input
-                  id="contact-subject" name="subject"
-                  type="text"
-                  value={form.subject}
-                  onChange={e => setForm({ ...form, subject: e.target.value })}
-                  placeholder="Perihal pesan Anda"
-                  className="w-full bg-navy-900/50 rounded-lg px-3 py-2.5 text-sm text-slate-200 placeholder-slate-500 border border-slate-700/40 transition-colors outline-none focus:border-teal-500/50"
+                  id="contact-subject" name="subject" type="text" enterKeyHint="next" maxLength={120}
+                  value={form.subject} onChange={setField('subject')} placeholder="Perihal pesan Anda" className={field(false)}
                 />
               </div>
 
               <div>
                 <label htmlFor="contact-message" className="block text-xs font-mono text-slate-400 mb-1.5 tracking-wide">PESAN *</label>
                 <textarea
-                  id="contact-message" name="message" required aria-invalid={!!errors.message} aria-describedby={errors.message ? 'contact-message-err' : undefined}
-                  rows={5}
-                  value={form.message}
-                  onChange={e => setForm({ ...form, message: e.target.value })}
-                  placeholder="Tulis pesan Anda..."
-                  className={`w-full bg-navy-900/50 rounded-lg px-3 py-2.5 text-sm text-slate-200 placeholder-slate-500 border transition-colors outline-none focus:border-teal-500/50 resize-none ${
-                    errors.message ? 'border-red-500/40' : 'border-slate-700/40'
-                  }`}
+                  id="contact-message" name="message" rows={5} maxLength={1000} required
+                  aria-invalid={!!errors.message} aria-describedby={errors.message ? 'contact-message-err' : undefined}
+                  value={form.message} onChange={setField('message')} placeholder="Tulis pesan Anda..."
+                  className={`${field(errors.message)} resize-none`}
                 />
                 {errors.message && <p id="contact-message-err" role="alert" className="text-red-400 text-xs mt-1">{errors.message}</p>}
               </div>
 
-              <button type="submit" className="btn-primary w-full justify-center">
-                <Send className="w-4 h-4" aria-hidden="true" /> Kirim Pesan
-              </button>
+              <SwipeToSend
+                onConfirm={send}
+                ariaLabel="Kirim pesan"
+                label="Geser untuk mengirim pesan"
+                sendingLabel="Membuka email…"
+                doneLabel="Email dibuka"
+              />
+              <p className="text-xs font-mono text-slate-400 text-center">Geser ke kanan, atau fokus ke tombol lalu tekan Enter</p>
+
+              <AnimatePresence>
+                {notice && (
+                  <motion.div
+                    initial={{ opacity: 0, y: -6 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0 }}
+                    role="status"
+                    className="flex items-start gap-2 rounded-lg px-3 py-2.5 text-sm border text-teal-300 bg-teal-500/10 border-teal-500/30"
+                  >
+                    <CheckCircle2 className="w-4 h-4 mt-0.5 shrink-0" aria-hidden="true" />
+                    {notice}
+                  </motion.div>
+                )}
+              </AnimatePresence>
             </form>
           </div>
-        </div>
-
-        {/* Comment section */}
-        <div className="border-t border-slate-800 pt-12" data-aos="fade-up">
-          <div className="flex items-center gap-3 mb-10">
-            <MessageCircle className="w-5 h-5 text-teal-400" aria-hidden="true" />
-            <h3 className="font-display font-700 text-2xl text-slate-100">Tamu & Komentar</h3>
-            <div className="flex-1 h-px bg-gradient-to-r from-teal-500/20 to-transparent ml-2" />
-          </div>
-          <Comments />
         </div>
       </div>
     </section>

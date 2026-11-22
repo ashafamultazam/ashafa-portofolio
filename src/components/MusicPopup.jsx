@@ -18,14 +18,29 @@ export default function MusicPopup() {
   const embed = toEmbed(MUSIC.url)
   const [open, setOpen] = useState(false)
   const [loaded, setLoaded] = useState(false) // iframe baru dibuat saat pertama dibuka (hemat kuota & skor performa)
+  const [hint, setHint] = useState(false) // gelembung petunjuk, muncul sekali per sesi
   const toggleRef = useRef(null)
   const closeRef = useRef(null)
   const reduce = useReducedMotion()
 
   const openPanel = () => {
     setLoaded(true)
+    setHint(false)
     setOpen(true)
   }
+
+  // Munculkan petunjuk "Putar musik" sekali (2,5 dtk setelah halaman dibuka), hilang sendiri setelah 6 dtk
+  useEffect(() => {
+    let seen = false
+    try { seen = sessionStorage.getItem('music-hint') === '1' } catch { /* abaikan */ }
+    if (seen) return
+    const show = setTimeout(() => {
+      setHint(true)
+      try { sessionStorage.setItem('music-hint', '1') } catch { /* abaikan */ }
+    }, 2500)
+    const hide = setTimeout(() => setHint(false), 8500)
+    return () => { clearTimeout(show); clearTimeout(hide) }
+  }, [])
   const closePanel = () => {
     setOpen(false)
     toggleRef.current?.focus()
@@ -100,11 +115,24 @@ export default function MusicPopup() {
         </a>
       </motion.div>
 
+      {/* Gelembung petunjuk (dekoratif) */}
+      <motion.div
+        aria-hidden="true"
+        initial={false}
+        animate={hint && !open ? { opacity: 1, x: 0 } : { opacity: 0, x: 12 }}
+        transition={{ duration: reduce ? 0 : 0.35 }}
+        style={{ pointerEvents: 'none' }}
+        className="fixed z-[60] right-14 bottom-[6.9rem] glass rounded-full px-3 py-1.5 text-xs font-mono text-teal-300 border border-teal-500/30 whitespace-nowrap"
+      >
+        Putar musik ♪
+      </motion.div>
+
       {/* Tab kecil menempel di tepi kanan layar (tidak makan tempat) */}
       <button
         ref={toggleRef}
         type="button"
         onClick={() => (open ? closePanel() : openPanel())}
+        title={open ? 'Ciutkan pemutar musik' : 'Putar musik'}
         aria-label={open ? 'Ciutkan pemutar musik' : 'Buka pemutar musik'}
         aria-expanded={open}
         aria-controls="music-panel"
