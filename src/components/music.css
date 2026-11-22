@@ -1,0 +1,35 @@
+/* Pemutar musik popup: tab di tepi kanan layar */
+.music-tab {
+  --neon: #2dd4bf;
+  background: linear-gradient(180deg, rgba(15, 23, 42, 0.95), rgba(8, 12, 28, 0.98));
+  border: 1px solid color-mix(in srgb, var(--neon) 45%, transparent);
+  border-right: none;
+  box-shadow:
+    0 0 18px color-mix(in srgb, var(--neon) 30%, transparent),
+    0 0 50px color-mix(in srgb, var(--neon) 12%, transparent);
+  transition: box-shadow 0.3s, transform 0.3s, border-color 0.3s;
+  animation: music-glow 3.5s ease-in-out infinite;
+}
+.music-tab:hover {
+  animation: none;
+  transform: translateX(-4px);
+  border-color: var(--neon);
+  box-shadow:
+    0 0 24px color-mix(in srgb, var(--neon) 55%, transparent),
+    0 0 70px color-mix(in srgb, var(--neon) 25%, transparent);
+}
+@keyframes music-glow {
+  0%, 100% { box-shadow: 0 0 12px color-mix(in srgb, var(--neon) 20%, transparent), 0 0 40px color-mix(in srgb, var(--neon) 8%, transparent); }
+  50%      { box-shadow: 0 0 22px color-mix(in srgb, var(--neon) 40%, transparent), 0 0 60px color-mix(in srgb, var(--neon) 16%, transparent); }
+}
+
+.music-panel {
+  --neon: #2dd4bf;
+  background: linear-gradient(180deg, rgba(15, 23, 42, 0.96), rgba(8, 12, 28, 0.98));
+  border: 1px solid color-mix(in srgb, var(--neon) 35%, transparent);
+  box-shadow:
+    0 0 0 1px color-mix(in srgb, var(--neon) 12%, transparent),
+    0 0 40px color-mix(in srgb, var(--neon) 18%, transparent),
+    0 30px 60px -20px rgba(0, 0, 0, 0.75);
+  backdrop-filter: blur(14px);
+}

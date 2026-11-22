@@ -1,9 +1,236 @@
-import { motion } from 'framer-motion'
-import { Award, Calendar, Tag, ExternalLink } from 'lucide-react'
+import { useCallback, useEffect, useRef, useState } from 'react'
+import { motion, useReducedMotion } from 'framer-motion'
+import { Award, Calendar, ChevronLeft, ChevronRight, ExternalLink } from 'lucide-react'
 import { CERTIFICATIONS } from '../data/portfolio'
 import PdfThumb from './PdfThumb'
+import './neon.css'
 
 const platformCount = new Set(CERTIFICATIONS.map((c) => c.issuer)).size
+const NEON = { teal: '#2DD4BF', amber: '#FBBF24' }
+const MAX_TOPICS = 4
+
+function CertCard({ cert, offset, index, total, width, spacing, reduce, onSelect, wasDragged }) {
+  const abs = Math.abs(offset)
+  const active = offset === 0
+  const neon = NEON[cert.color] || NEON.teal
+  const Wrapper = active && cert.link ? 'a' : 'div'
+  const wrapperProps =
+    active && cert.link
+      ? {
+          href: cert.link,
+          target: '_blank',
+          rel: 'noreferrer',
+          'aria-label': `Buka sertifikat ${cert.title} dari ${cert.issuer} (PDF, tab baru)`,
+          // klik setelah menggeser kartu tidak boleh membuka link
+          onClick: (e) => wasDragged.current && e.preventDefault(),
+          draggable: false,
+        }
+      : {}
+
+  return (
+    <motion.div
+      role="group"
+      aria-roledescription="slide"
+      aria-label={`${index + 1} dari ${total}`}
+      aria-hidden={active ? undefined : true}
+      initial={false}
+      animate={{
+        x: offset * spacing,
+        scale: 1 - Math.min(abs, 3) * 0.13,
+        rotateY: -Math.max(-1, Math.min(1, offset)) * 40,
+        opacity: abs === 0 ? 1 : abs === 1 ? 0.55 : abs === 2 ? 0.22 : 0,
+        filter: `brightness(${active ? 1 : 0.5}) saturate(${active ? 1 : 0.7})`,
+      }}
+      transition={reduce ? { duration: 0 } : { type: 'spring', stiffness: 170, damping: 24 }}
+      style={{
+        gridArea: '1 / 1',
+        width,
+        zIndex: 10 - abs,
+        transformPerspective: 1300,
+        pointerEvents: abs > 2 ? 'none' : 'auto',
+        '--neon': neon,
+      }}
+      onClick={() => {
+        if (!active && !wasDragged.current) onSelect()
+      }}
+      className="cert-card self-stretch will-change-transform"
+      data-active={active}
+    >
+      <Wrapper {...wrapperProps} className="group flex flex-col h-full focus-visible:outline-offset-[-4px]">
+        <PdfThumb item={cert} emoji={cert.badge} label="SERTIFIKAT" cta="Lihat sertifikat" />
+
+        <div className="p-5 flex flex-col flex-1">
+          <div className="flex items-start justify-between gap-3">
+            <div className="min-w-0">
+              <h3 className="font-display font-700 text-base text-slate-100 leading-snug">{cert.title}</h3>
+              <p className="text-sm mt-1 font-medium" style={{ color: neon }}>
+                {cert.issuer}
+              </p>
+            </div>
+            {cert.highlight && (
+              <span
+                className="shrink-0 rounded-full px-2.5 py-0.5 text-[11px] font-mono border"
+                style={{ color: neon, borderColor: `${neon}55`, background: `${neon}14` }}
+              >
+                Featured
+              </span>
+            )}
+          </div>
+
+          <div className="flex items-center gap-2 text-slate-400 text-xs mt-3">
+            <Calendar className="w-3 h-3" aria-hidden="true" />
+            <span className="font-mono">{cert.period}</span>
+          </div>
+
+          <div className="flex items-center gap-1.5 flex-wrap mt-4">
+            {cert.topics.slice(0, MAX_TOPICS).map((t) => (
+              <span
+                key={t}
+                className="px-2 py-0.5 rounded text-xs font-mono border"
+                style={{ color: neon, borderColor: `${neon}33`, background: `${neon}12` }}
+              >
+                {t}
+              </span>
+            ))}
+            {cert.topics.length > MAX_TOPICS && (
+              <span className="text-xs font-mono text-slate-400">+{cert.topics.length - MAX_TOPICS}</span>
+            )}
+          </div>
+
+          {active && cert.link && (
+            <p className="mt-auto pt-5 text-xs font-mono flex items-center gap-1.5" style={{ color: neon }}>
+              Lihat sertifikat (PDF) <ExternalLink className="w-3 h-3" aria-hidden="true" />
+            </p>
+          )}
+        </div>
+      </Wrapper>
+    </motion.div>
+  )
+}
+
+function CertCarousel() {
+  const total = CERTIFICATIONS.length
+  const startAt = Math.max(0, CERTIFICATIONS.findIndex((c) => c.highlight))
+  const [index, setIndex] = useState(startAt)
+  const [stageW, setStageW] = useState(960)
+  const stageRef = useRef(null)
+  const wasDragged = useRef(false)
+  const reduce = useReducedMotion()
+
+  useEffect(() => {
+    const el = stageRef.current
+    if (!el || !('ResizeObserver' in window)) return
+    const ro = new ResizeObserver(([e]) => setStageW(e.contentRect.width))
+    ro.observe(el)
+    return () => ro.disconnect()
+  }, [])
+
+  const go = useCallback((i) => setIndex(Math.max(0, Math.min(total - 1, i))), [total])
+  const prev = () => go(index - 1)
+  const next = () => go(index + 1)
+
+  const width = Math.max(250, Math.min(430, stageW * 0.74))
+  const spacing = width * 0.64
+
+  const onKeyDown = (e) => {
+    if (e.key === 'ArrowLeft') { e.preventDefault(); prev() }
+    if (e.key === 'ArrowRight') { e.preventDefault(); next() }
+    if (e.key === 'Home') { e.preventDefault(); go(0) }
+    if (e.key === 'End') { e.preventDefault(); go(total - 1) }
+  }
+
+  const onDragEnd = (_, info) => {
+    const { offset, velocity } = info
+    if (offset.x < -60 || velocity.x < -500) next()
+    else if (offset.x > 60 || velocity.x > 500) prev()
+    setTimeout(() => { wasDragged.current = false }, 60)
+  }
+
+  return (
+    <div
+      role="region"
+      aria-roledescription="carousel"
+      aria-label="Pelatihan dan sertifikasi"
+      tabIndex={0}
+      onKeyDown={onKeyDown}
+      className="rounded-xl focus-visible:outline-offset-4"
+    >
+      <p className="sr-only" aria-live="polite">
+        Sertifikat {index + 1} dari {total}: {CERTIFICATIONS[index].title}
+      </p>
+
+      <div ref={stageRef} className="overflow-x-clip py-10">
+        <motion.div
+          drag="x"
+          dragConstraints={{ left: 0, right: 0 }}
+          dragElastic={0.18}
+          onDragStart={() => { wasDragged.current = true }}
+          onDragEnd={onDragEnd}
+          style={{ touchAction: 'pan-y' }}
+          className="grid justify-items-center cursor-grab active:cursor-grabbing select-none"
+        >
+          {CERTIFICATIONS.map((cert, i) => (
+            <CertCard
+              key={cert.title}
+              cert={cert}
+              index={i}
+              total={total}
+              offset={i - index}
+              width={width}
+              spacing={spacing}
+              reduce={reduce}
+              wasDragged={wasDragged}
+              onSelect={() => go(i)}
+            />
+          ))}
+        </motion.div>
+      </div>
+
+      {/* Kontrol: panah + titik (target sentuh 44px) */}
+      <div className="flex items-center justify-center gap-2">
+        <button
+          type="button"
+          onClick={prev}
+          disabled={index === 0}
+          aria-label="Sertifikat sebelumnya"
+          className="w-11 h-11 flex items-center justify-center rounded-full border border-teal-500/25 text-teal-400 hover:border-teal-400 hover:shadow-[0_0_16px_rgba(45,212,191,0.35)] disabled:opacity-30 disabled:hover:shadow-none transition"
+        >
+          <ChevronLeft className="w-5 h-5" aria-hidden="true" />
+        </button>
+
+        <div className="flex items-center">
+          {CERTIFICATIONS.map((c, i) => (
+            <button
+              key={c.title}
+              type="button"
+              onClick={() => go(i)}
+              aria-label={`Tampilkan sertifikat ${i + 1}: ${c.title}`}
+              aria-current={i === index ? 'true' : undefined}
+              className="w-9 h-11 flex items-center justify-center"
+            >
+              <span
+                className={`block h-2 rounded-full transition-all duration-300 ${
+                  i === index ? 'w-7 bg-teal-400 shadow-[0_0_10px_#2DD4BF]' : 'w-2 bg-slate-600'
+                }`}
+              />
+            </button>
+          ))}
+        </div>
+
+        <button
+          type="button"
+          onClick={next}
+          disabled={index === total - 1}
+          aria-label="Sertifikat berikutnya"
+          className="w-11 h-11 flex items-center justify-center rounded-full border border-teal-500/25 text-teal-400 hover:border-teal-400 hover:shadow-[0_0_16px_rgba(45,212,191,0.35)] disabled:opacity-30 disabled:hover:shadow-none transition"
+        >
+          <ChevronRight className="w-5 h-5" aria-hidden="true" />
+        </button>
+      </div>
+      <p className="text-center text-xs font-mono text-slate-400 mt-3">Geser, klik kartu, atau gunakan tombol panah</p>
+    </div>
+  )
+}
 
 export default function Certifications() {
   return (
@@ -11,8 +238,7 @@ export default function Certifications() {
       <div className="absolute top-0 right-1/4 w-96 h-96 bg-amber-500/4 rounded-full blur-3xl" aria-hidden="true" />
 
       <div className="max-w-7xl mx-auto px-6 lg:px-8">
-        {/* Header */}
-        <div className="flex items-center gap-4 mb-14" data-aos="fade-right">
+        <div className="flex items-center gap-4 mb-10" data-aos="fade-right">
           <div className="w-10 h-10 rounded-lg bg-teal-500/10 border border-teal-500/20 flex items-center justify-center">
             <Award className="w-5 h-5 text-teal-400" aria-hidden="true" />
           </div>
@@ -23,109 +249,13 @@ export default function Certifications() {
           <div className="flex-1 h-px bg-gradient-to-r from-teal-500/20 to-transparent ml-4" />
         </div>
 
-        <div className="grid sm:grid-cols-2 gap-6">
-          {CERTIFICATIONS.map((cert, i) => {
-            const Card = cert.link ? motion.a : motion.div
-            const linkProps = cert.link
-              ? {
-                  href: cert.link,
-                  target: '_blank',
-                  rel: 'noreferrer',
-                  'aria-label': `Buka sertifikat ${cert.title} dari ${cert.issuer} (PDF, tab baru)`,
-                }
-              : {}
-            const accent = cert.color === 'teal' ? 'teal' : 'amber'
+        <CertCarousel />
 
-            return (
-              <Card
-                key={cert.title}
-                {...linkProps}
-                initial={{ opacity: 0, y: 30 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ delay: (i % 2) * 0.1, duration: 0.5 }}
-                className={`block glass glass-hover card-lift rounded-xl border overflow-hidden relative group focus-visible:outline focus-visible:outline-2 focus-visible:outline-teal-400 ${
-                  cert.highlight ? 'border-teal-500/30' : 'border-slate-700/30'
-                }`}
-              >
-                {/* Thumbnail sertifikat */}
-                <div className="relative">
-                  <PdfThumb item={cert} emoji={cert.badge} label="SERTIFIKAT" cta="Lihat sertifikat" />
-                  {cert.highlight && (
-                    <span className="absolute top-3 right-3 inline-flex items-center gap-1 glass rounded-full px-2.5 py-0.5 text-xs font-mono text-teal-400 border border-teal-500/30">
-                      ⭐ Featured
-                    </span>
-                  )}
-                </div>
-
-                <div className="p-6">
-                  {/* Judul + penerbit */}
-                  <div className="flex items-start justify-between gap-3 mb-3">
-                    <div className="flex items-start gap-3 min-w-0">
-                      <span className="text-2xl leading-none mt-0.5" aria-hidden="true">{cert.badge}</span>
-                      <div className="min-w-0">
-                        <h3 className="font-display font-700 text-base text-slate-100 leading-tight">
-                          {cert.title}
-                        </h3>
-                        <p className={`text-sm mt-1 font-medium ${accent === 'teal' ? 'text-teal-400' : 'text-amber-400'}`}>
-                          {cert.issuer}
-                        </p>
-                      </div>
-                    </div>
-                    {cert.link && (
-                      <ExternalLink className="w-4 h-4 mt-1 shrink-0 text-slate-400 group-hover:text-teal-400 transition-colors" aria-hidden="true" />
-                    )}
-                  </div>
-
-                  {/* Tanggal */}
-                  <div className="flex items-center gap-2 text-slate-400 text-xs mb-4">
-                    <Calendar className="w-3 h-3" aria-hidden="true" />
-                    <span className="font-mono">{cert.period}</span>
-                  </div>
-
-                  {/* Topik */}
-                  <div className="flex items-center gap-1.5 flex-wrap">
-                    <Tag className="w-3 h-3 text-slate-400" aria-hidden="true" />
-                    {cert.topics.map((topic) => (
-                      <span
-                        key={topic}
-                        className={`inline-block px-2 py-0.5 rounded text-xs font-mono border ${
-                          accent === 'teal'
-                            ? 'bg-teal-500/10 text-teal-400 border-teal-500/20'
-                            : 'bg-amber-500/10 text-amber-400 border-amber-500/20'
-                        }`}
-                      >
-                        {topic}
-                      </span>
-                    ))}
-                  </div>
-
-                  {/* Ajakan klik, selalu terlihat (di HP tidak ada hover) */}
-                  {cert.link && (
-                    <p className="mt-5 text-xs font-mono text-teal-400 group-hover:underline">
-                      Lihat sertifikat (PDF) →
-                    </p>
-                  )}
-                </div>
-
-                {/* Garis aksen bawah */}
-                <div
-                  className={`h-0.5 ${
-                    accent === 'teal'
-                      ? 'bg-gradient-to-r from-teal-500/50 via-teal-500/20 to-transparent'
-                      : 'bg-gradient-to-r from-amber-500/50 via-amber-500/20 to-transparent'
-                  }`}
-                />
-              </Card>
-            )
-          })}
-        </div>
-
-        {/* Stats bar: angka diturunkan dari data (dulu hardcode "12+ sertifikat" & "3 platform") */}
-        <motion.div
+        {/* Stats bar: angka diturunkan dari data */}
+        <div
           data-aos="fade-up"
           data-aos-delay="200"
-          className="mt-10 glass rounded-xl border border-teal-500/10 p-6 grid grid-cols-2 md:grid-cols-4 gap-6 text-center"
+          className="mt-12 glass rounded-xl border border-teal-500/10 p-6 grid grid-cols-2 md:grid-cols-4 gap-6 text-center"
         >
           {[
             { label: 'Total Sertifikat', value: String(CERTIFICATIONS.length), icon: '🏅' },
@@ -139,7 +269,7 @@ export default function Certifications() {
               <div className="text-xs text-slate-400 mt-0.5">{label}</div>
             </div>
           ))}
-        </motion.div>
+        </div>
       </div>
     </section>
   )

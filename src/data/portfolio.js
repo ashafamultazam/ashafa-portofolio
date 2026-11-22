@@ -246,3 +246,11 @@ export const TECH_GROUPS = [
 ]
 
 export const SOFT_SKILLS = ['Problem Solving', 'Team Collaboration', 'Communication', 'Leadership']
+
+export const MUSIC = {
+  url: 'https://open.spotify.com/playlist/6C4bnO2NFT2RjNU7CUAW1R?si=dc4f9c5063d648fa',
+  heading1: 'A little music.',
+  heading2: 'A lot of ideas.',
+  description: 'Playlist yang menemani saya mengolah data dan ngoding.',
+  label: 'Buka di Spotify',
+}

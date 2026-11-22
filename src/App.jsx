@@ -11,6 +11,7 @@ import Certifications from './components/Certifications'
 import Projects from './components/Projects'
 import Experience from './components/Experience'
 import Footer from './components/Footer'
+import MusicPopup from './components/MusicPopup'
 import Divider from './components/Divider'
 
 // Contact memuat Supabase + SweetAlert (berat), jadi baru diunduh saat mendekati layar
@@ -76,6 +77,7 @@ export default function App() {
       </main>
 
       <Footer />
+      <MusicPopup />
     </div>
   )
 }

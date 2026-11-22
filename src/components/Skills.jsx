@@ -7,6 +7,7 @@ import {
 import { FaDatabase, FaFileExcel, FaFilePowerpoint } from 'react-icons/fa'
 import { PowerBiIcon, CanvaIcon, MatplotlibIcon } from './BrandIcons'
 import { TECH_GROUPS, SOFT_SKILLS } from '../data/portfolio'
+import './neon.css'
 
 // Warna merek dipakai supaya logo mudah dikenali di background gelap.
 const ICONS = {
@@ -16,30 +17,41 @@ const ICONS = {
   python: { Icon: SiPython, color: '#FFD43B' },
   pandas: { Icon: SiPandas, color: '#E6E6FA' },
   numpy: { Icon: SiNumpy, color: '#6FB7F0' },
-  matplotlib: { Icon: MatplotlibIcon },
+  matplotlib: { Icon: MatplotlibIcon, neon: '#5B8DB8' },
   colab: { Icon: SiGooglecolab, color: '#F9AB00' },
-  powerbi: { Icon: PowerBiIcon },
+  powerbi: { Icon: PowerBiIcon, neon: '#F2C811' },
   looker: { Icon: SiLooker, color: '#A78BFA' },
   excel: { Icon: FaFileExcel, color: '#21A366' },
   github: { Icon: SiGithub, color: '#F1F5F9' },
   powerpoint: { Icon: FaFilePowerpoint, color: '#F26B3A' },
-  canva: { Icon: CanvaIcon },
+  canva: { Icon: CanvaIcon, neon: '#00C4CC' },
 }
 
 function TechItem({ name, icon, index }) {
-  const { Icon, color } = ICONS[icon]
+  const { Icon, color, neon } = ICONS[icon]
+  const glow = neon || color || '#2DD4BF'
+
+  // Posisi kursor disimpan sebagai variabel CSS, jadi cahaya neon mengikuti kursor tanpa re-render React
+  const onMove = (e) => {
+    const r = e.currentTarget.getBoundingClientRect()
+    e.currentTarget.style.setProperty('--mx', `${e.clientX - r.left}px`)
+    e.currentTarget.style.setProperty('--my', `${e.clientY - r.top}px`)
+  }
+
   return (
     <motion.li
       initial={{ opacity: 0, y: 12 }}
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true }}
       transition={{ delay: index * 0.05, duration: 0.4 }}
-      whileHover={{ y: -4 }}
-      className="glass glass-hover rounded-xl w-[104px] py-4 px-2 flex flex-col items-center gap-3 border border-slate-700/30 transition-colors"
+      whileHover={{ y: -5 }}
+      onPointerMove={onMove}
+      style={{ '--neon': glow, '--d': `${(index % 5) * 0.6}s` }}
+      className="neon-tile w-[104px] py-4 px-2 flex flex-col items-center gap-3"
     >
       {/* Ukuran sedang: 48px (w-12). Ubah ke w-10 (lebih kecil) atau w-14 (lebih besar) */}
-      <Icon className="w-12 h-12" style={color ? { color } : undefined} aria-hidden="true" />
-      <span className="text-xs sm:text-[13px] text-slate-300 text-center leading-tight font-medium">
+      <Icon className="neon-icon w-12 h-12" style={color ? { color } : undefined} aria-hidden="true" />
+      <span className="neon-label text-xs sm:text-[13px] text-slate-300 text-center leading-tight font-medium">
         {name}
       </span>
     </motion.li>
