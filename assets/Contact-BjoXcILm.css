@@ -1,0 +1,1 @@
+@keyframes swipe-nudge{0%,to{transform:translate(0);opacity:.6}50%{transform:translate(4px);opacity:1}}.swipe-nudge{animation:swipe-nudge 1.6s ease-in-out infinite}
