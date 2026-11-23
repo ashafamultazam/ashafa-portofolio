@@ -1,5 +1,6 @@
 import { Suspense, lazy, useEffect, useRef, useState } from 'react'
 import { initReveal } from './lib/reveal'
+import './layout.css'
 
 import CustomCursor from './components/CustomCursor'
 import Navbar from './components/Navbar'
@@ -17,7 +18,7 @@ import Divider from './components/Divider'
 // Contact memuat Supabase + SweetAlert (berat), jadi baru diunduh saat mendekati layar
 const Contact = lazy(() => import('./components/Contact'))
 
-function Defer({ id, minHeight = '70vh', children }) {
+function Defer({ id, minHeight = '100svh', children }) {
   const ref = useRef(null)
   const [show, setShow] = useState(false)
 

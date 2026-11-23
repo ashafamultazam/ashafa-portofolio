@@ -255,7 +255,8 @@ export default function Hero() {
               <div ref={ref} className="grid grid-cols-2 gap-3">
                 {STATS.map(({ label, value, suffix, prefix, decimals }) => (
                   <div key={label} className="bg-navy-800/60 rounded-lg p-3.5 border border-slate-700/30">
-                    <p className="text-2xl font-display font-700 text-teal-400 leading-none">
+                    {/* min-h menahan tinggi kartu sebelum angka mulai dihitung (mencegah layout bergeser 24px saat di-scroll) */}
+                    <p className="text-2xl font-display font-700 text-teal-400 leading-none min-h-[1.5rem]">
                       {prefix}
                       {inView && <CountUp end={value} decimals={decimals || 0} duration={2} />}
                       {suffix}

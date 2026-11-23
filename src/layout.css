@@ -1,0 +1,39 @@
+/* ═══ Tiap section = satu layar penuh ═══
+   Saat menu navbar diklik, bagian atas section menempel tepat di tepi atas layar,
+   dan section mengisi seluruh tinggi layar (tidak ada sisa section lain yang mengintip).
+   Selektor memakai "body ..." supaya menang atas aturan lama di index.css. */
+
+:root {
+  --nav-h: 3rem; /* samakan dengan tinggi navbar (h-12 di Navbar.jsx) */
+}
+
+body section.section-base,
+body #hero {
+  min-height: 100vh;
+  min-height: 100svh; /* svh = tinggi layar yang benar-benar terlihat di HP (address bar ikut dihitung) */
+  scroll-margin-top: 0; /* section menempel di tepi atas, navbar ditutup oleh padding di bawah */
+}
+
+body section.section-base {
+  display: flex;
+  flex-direction: column;
+  justify-content: center; /* konten pendek berada di tengah layar, bukan menempel di atas */
+  padding-top: calc(var(--nav-h) + 2rem);
+  padding-bottom: 3rem;
+}
+/* anak langsung harus selebar layar karena memakai mx-auto di dalam flex-column */
+body section.section-base > div {
+  width: 100%;
+}
+
+/* pembungkus Contact (dimuat belakangan) juga satu layar penuh */
+body div#contact {
+  min-height: 100vh;
+  min-height: 100svh;
+  scroll-margin-top: 0;
+}
+
+/* OPSIONAL: aktifkan kalau ingin layar "menempel" otomatis ke section terdekat saat di-scroll biasa.
+html { scroll-snap-type: y proximity; }
+body section.section-base, body #hero, body div#contact { scroll-snap-align: start; }
+*/

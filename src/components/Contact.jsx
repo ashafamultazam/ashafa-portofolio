@@ -2,22 +2,25 @@ import { useEffect, useRef, useState } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { Mail, Phone, MapPin, Github, Linkedin, CheckCircle2, AlertTriangle, MessageSquare } from 'lucide-react'
 import SwipeToSend from './SwipeToSend'
-import { CommentList, useComments, COMMENT_MAX } from './Comments'
+import { CommentList, useComments, checkComment, COMMENT_MAX, NAME_MAX } from './Comments'
 import { PERSONAL, GMAIL_LINK } from '../data/portfolio'
 
+// text-base di HP (16px) mencegah iOS Safari memperbesar layar otomatis saat kolom difokuskan
+const field = (err) =>
+  `w-full bg-navy-900/50 rounded-lg px-3 py-2.5 text-base sm:text-sm text-slate-200 placeholder-slate-500 border transition-colors outline-none focus:border-teal-500/60 focus:shadow-[0_0_0_3px_rgba(45,212,191,0.12)] ${
+    err ? 'border-red-500/40' : 'border-slate-700/40'
+  }`
+
 export default function Contact() {
-  const [form, setForm] = useState({ name: '', email: '', subject: '', message: '' })
+  const [form, setForm] = useState({ name: '', message: '' })
   const [errors, setErrors] = useState({})
-  const [mode, setMode] = useState('message') // 'message' = email pribadi, 'comment' = komentar publik
+  const [notice, setNotice] = useState(null) // { type: 'ok' | 'error', text }
   const { comments, loading, cooldown, post } = useComments()
   const honeypot = useRef(null)
-  const isComment = mode === 'comment'
-
-  const [notice, setNotice] = useState(null) // { type: 'ok' | 'error', text }
 
   useEffect(() => {
     if (!notice) return
-    const t = setTimeout(() => setNotice(null), 8000)
+    const t = setTimeout(() => setNotice(null), 7000)
     return () => clearTimeout(t)
   }, [notice])
 
@@ -27,83 +30,31 @@ export default function Contact() {
   }
 
   const validate = () => {
-    const e = {}
-    if (!form.name.trim()) e.name = 'Nama wajib diisi'
-    if (isComment) {
-      if (form.email.trim() && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(form.email.trim())) e.email = 'Format email tidak valid'
-      if (form.message.trim().length < 5) e.message = form.message.trim() ? 'Komentar terlalu singkat (min. 5 karakter)' : 'Komentar wajib diisi'
-    } else {
-      if (!form.email.trim()) e.email = 'Email wajib diisi'
-      else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(form.email.trim())) e.email = 'Format email tidak valid'
-      if (!form.message.trim()) e.message = 'Pesan wajib diisi'
-    }
+    const e = checkComment(form)
     setErrors(e)
-    const first = ['name', 'email', 'message'].find((k) => e[k])
-    if (first) document.getElementById(`contact-${first}`)?.focus()
+    const first = ['name', 'message'].find((k) => e[k])
+    if (first) document.getElementById(`cm-${first}`)?.focus()
     return Object.keys(e).length === 0
   }
 
-  const chooseMode = (m) => {
-    setMode(m)
-    setErrors({})
-    setNotice(null)
-  }
-  const onModeKey = (e) => {
-    if (['ArrowLeft', 'ArrowRight', 'ArrowUp', 'ArrowDown'].includes(e.key)) {
-      e.preventDefault()
-      chooseMode(mode === 'message' ? 'comment' : 'message')
-      document.getElementById(`mode-${mode === 'message' ? 'comment' : 'message'}`)?.focus()
-    }
-  }
-
-  // Komentar publik: disimpan ke Supabase dan langsung tampil di daftar "Komentar" di bawah
-  const sendComment = async () => {
-    if (honeypot.current?.value) return true // bot mengisi kolom tersembunyi: pura-pura sukses
-    try {
-      await post({ name: form.name.trim(), email: form.email.trim(), message: form.message.trim() })
-      setForm({ name: '', email: '', subject: '', message: '' })
-      setErrors({})
-      setNotice({ type: 'ok', text: 'Terima kasih! Komentar Anda sudah tampil di bagian Komentar di bawah.' })
-      return true
-    } catch (err) {
-      console.warn('Komentar gagal dikirim:', err?.message || err)
-      setNotice({ type: 'error', text: 'Komentar belum bisa dikirim. Periksa koneksi lalu coba lagi.' })
-      return false
-    }
-  }
-
-  // Satu-satunya form di halaman ini. Tidak butuh server:
-  // - Desktop: membuka Gmail (tab baru) dengan isi yang sudah terisi
-  // - HP: membuka aplikasi email bawaan (mailto)
-  // Mau kirim langsung tanpa membuka email? Ganti dengan Web3Forms / Formspree / EmailJS.
+  // Dipanggil oleh tombol geser; true = berhasil
   const send = async () => {
     setNotice(null)
     if (!validate()) return false
-    if (isComment) return sendComment()
-    const subject = form.subject.trim() || `Pesan dari ${form.name.trim()}`
-    const body = `${form.message.trim()}\n\n— ${form.name.trim()} (${form.email.trim()})`
-    const mailto = `mailto:${PERSONAL.email}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`
-    const gmail = `https://mail.google.com/mail/?view=cm&fs=1&to=${encodeURIComponent(PERSONAL.email)}&su=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`
-
-    const isTouch = window.matchMedia('(pointer: coarse)').matches
-    if (isTouch) {
-      window.location.href = mailto
-      setNotice({ type: 'ok', text: 'Aplikasi email dibuka. Tekan Kirim di sana untuk menyelesaikan.' })
-    } else {
-      const w = window.open(gmail, '_blank', 'noopener')
-      if (!w) window.location.href = mailto // pop-up diblokir: pakai mailto
-      setNotice({ type: 'ok', text: 'Gmail dibuka di tab baru. Tekan Kirim di sana untuk menyelesaikan.' })
+    if (honeypot.current?.value) return true // bot mengisi kolom tersembunyi: pura-pura sukses
+    try {
+      await post({ name: form.name, message: form.message })
+      setForm({ name: '', message: '' })
+      setErrors({})
+      setNotice({ type: 'ok', text: 'Terima kasih! Komentar Anda terkirim dan akan tampil untuk semua pengunjung setelah disetujui.' })
+      return true
+    } catch (err) {
+      console.warn('Komentar gagal dikirim:', err?.message || err)
+      const tooMany = /terlalu banyak|tautan/i.test(err?.message || '')
+      setNotice({ type: 'error', text: tooMany ? 'Komentar ditolak. Coba lagi beberapa saat lagi.' : 'Komentar belum bisa dikirim. Periksa koneksi lalu coba lagi.' })
+      return false
     }
-    setForm({ name: '', email: '', subject: '', message: '' })
-    setErrors({})
-    return true
   }
-
-  // text-base di HP (16px) mencegah iOS Safari memperbesar layar otomatis saat kolom difokuskan
-  const field = (err) =>
-    `w-full bg-navy-900/50 rounded-lg px-3 py-3 text-base sm:text-sm text-slate-200 placeholder-slate-500 border transition-colors outline-none focus:border-teal-500/60 focus:shadow-[0_0_0_3px_rgba(45,212,191,0.12)] ${
-      err ? 'border-red-500/40' : 'border-slate-700/40'
-    }`
 
   const contactItems = [
     { icon: Mail, label: 'Email', value: PERSONAL.email, href: GMAIL_LINK, color: 'teal' },
@@ -115,8 +66,7 @@ export default function Contact() {
 
   return (
     <section className="section-base relative overflow-hidden">
-      {/* Decorative */}
-      <div className="absolute top-0 left-1/2 w-[600px] h-[600px] bg-teal-500/3 rounded-full blur-3xl -translate-x-1/2" />
+      <div className="absolute top-0 left-1/2 w-[600px] h-[600px] bg-teal-500/3 rounded-full blur-3xl -translate-x-1/2" aria-hidden="true" />
 
       <div className="max-w-7xl mx-auto px-6 lg:px-8">
         {/* Header */}
@@ -131,34 +81,29 @@ export default function Contact() {
           <div className="flex-1 h-px bg-gradient-to-r from-teal-500/20 to-transparent ml-4" />
         </div>
 
-        <div className="grid lg:grid-cols-2 gap-12">
-          {/* Left: Info */}
+        <div className="grid lg:grid-cols-2 gap-10 lg:gap-12 items-start">
+          {/* Kiri: info kontak */}
           <div data-aos="fade-right">
             <p className="text-slate-400 leading-relaxed mb-8">
-              Tertarik bekerja sama atau punya pertanyaan tentang data analysis? 
-              Jangan ragu menghubungi saya — saya selalu terbuka untuk diskusi, 
+              Tertarik bekerja sama atau punya pertanyaan tentang data analysis?
+              Jangan ragu menghubungi saya — saya selalu terbuka untuk diskusi,
               kolaborasi, dan peluang baru.
             </p>
 
             <div className="space-y-4 mb-8">
               {contactItems.map(({ icon: Icon, label, value, href, color }) => (
-                <motion.div
-                  key={label}
-                  whileHover={{ x: 4 }}
-                  className="flex items-center gap-4"
-                >
-                  <div className={`w-10 h-10 rounded-lg flex items-center justify-center shrink-0 ${
-                    color === 'teal'
-                      ? 'bg-teal-500/10 border border-teal-500/20'
-                      : 'bg-amber-500/10 border border-amber-500/20'
-                  }`}>
+                <motion.div key={label} whileHover={{ x: 4 }} className="flex items-center gap-4">
+                  <div
+                    className={`w-10 h-10 rounded-lg flex items-center justify-center shrink-0 ${
+                      color === 'teal' ? 'bg-teal-500/10 border border-teal-500/20' : 'bg-amber-500/10 border border-amber-500/20'
+                    }`}
+                  >
                     <Icon className={`w-4 h-4 ${color === 'teal' ? 'text-teal-400' : 'text-amber-400'}`} aria-hidden="true" />
                   </div>
                   <div>
                     <p className="text-xs text-slate-400 font-mono">{label}</p>
                     {href ? (
-                      <a href={href} target="_blank" rel="noreferrer"
-                        className="text-slate-300 text-sm hover:text-teal-400 transition-colors">
+                      <a href={href} target="_blank" rel="noreferrer" className="text-slate-300 text-sm hover:text-teal-400 transition-colors">
                         {value}
                       </a>
                     ) : (
@@ -169,7 +114,6 @@ export default function Contact() {
               ))}
             </div>
 
-            {/* Availability badge */}
             <div className="glass rounded-xl p-4 border border-teal-500/15">
               <div className="flex items-center gap-2 mb-2">
                 <div className="w-2 h-2 rounded-full bg-teal-400 animate-pulse" />
@@ -182,80 +126,37 @@ export default function Contact() {
             </div>
           </div>
 
-          {/* Right: Form */}
-          <div data-aos="fade-left">
-            <form noValidate onSubmit={(e) => e.preventDefault()} className="glass rounded-xl border border-slate-700/30 p-6 space-y-4">
-              {/* Satu form, dua tujuan */}
-              <div role="radiogroup" aria-label="Jenis pesan" onKeyDown={onModeKey}
-                className="grid grid-cols-2 gap-1 p-1 rounded-lg bg-navy-900/60 border border-slate-700/40">
-                {[
-                  { id: 'message', label: 'Pesan pribadi', icon: Mail },
-                  { id: 'comment', label: 'Komentar publik', icon: MessageSquare },
-                ].map(({ id, label, icon: Icon }) => (
-                  <button
-                    key={id} id={`mode-${id}`} type="button" role="radio"
-                    aria-checked={mode === id} tabIndex={mode === id ? 0 : -1}
-                    onClick={() => chooseMode(id)}
-                    className={`flex items-center justify-center gap-2 min-h-11 rounded-md text-sm font-medium transition-colors ${
-                      mode === id
-                        ? 'bg-teal-500/15 text-teal-300 border border-teal-500/40 shadow-[0_0_14px_rgba(45,212,191,0.18)]'
-                        : 'text-slate-400 hover:text-slate-200 border border-transparent'
-                    }`}
-                  >
-                    <Icon className="w-4 h-4" aria-hidden="true" /> {label}
-                  </button>
-                ))}
-              </div>
-
-              <div className={`grid gap-4 ${isComment ? '' : 'sm:grid-cols-2'}`}>
-                <div>
-                  <label htmlFor="contact-name" className="block text-xs font-mono text-slate-400 mb-1.5 tracking-wide">NAMA *</label>
-                  <input
-                    id="contact-name" name="name" type="text" autoComplete="name" autoCapitalize="words" enterKeyHint="next"
-                    maxLength={60} required aria-invalid={!!errors.name} aria-describedby={errors.name ? 'contact-name-err' : undefined}
-                    value={form.name} onChange={setField('name')} placeholder="Nama Anda" className={field(errors.name)}
-                  />
-                  {errors.name && <p id="contact-name-err" role="alert" className="text-red-400 text-xs mt-1">{errors.name}</p>}
-                </div>
-                <div>
-                  <label htmlFor="contact-email" className="block text-xs font-mono text-slate-400 mb-1.5 tracking-wide">
-                    {isComment ? 'EMAIL (opsional, tidak ditampilkan)' : 'EMAIL *'}
-                  </label>
-                  <input
-                    id="contact-email" name="email" type="email" inputMode="email" autoComplete="email" enterKeyHint="next"
-                    maxLength={120} required={!isComment} aria-invalid={!!errors.email} aria-describedby={errors.email ? 'contact-email-err' : undefined}
-                    value={form.email} onChange={setField('email')} placeholder="email@contoh.com" className={field(errors.email)}
-                  />
-                  {errors.email && <p id="contact-email-err" role="alert" className="text-red-400 text-xs mt-1">{errors.email}</p>}
-                </div>
-              </div>
-
-              {!isComment && (
-                <div>
-                  <label htmlFor="contact-subject" className="block text-xs font-mono text-slate-400 mb-1.5 tracking-wide">SUBJEK</label>
-                  <input
-                    id="contact-subject" name="subject" type="text" enterKeyHint="next" maxLength={120}
-                    value={form.subject} onChange={setField('subject')} placeholder="Perihal pesan Anda" className={field(false)}
-                  />
-                </div>
-              )}
+          {/* Kanan: form komentar + daftar komentar (ringkas, bisa di-scroll) */}
+          <div data-aos="fade-left" className="space-y-4">
+            <form noValidate onSubmit={(e) => e.preventDefault()} className="glass rounded-xl border border-slate-700/30 p-5 space-y-3.5">
+              <h3 className="font-display font-600 text-lg text-slate-100 flex items-center gap-2">
+                <MessageSquare className="w-4 h-4 text-teal-400" aria-hidden="true" />
+                Tinggalkan Komentar
+              </h3>
 
               <div>
-                <label htmlFor="contact-message" className="block text-xs font-mono text-slate-400 mb-1.5 tracking-wide">
-                  {isComment ? 'KOMENTAR *' : 'PESAN *'}
-                </label>
+                <label htmlFor="cm-name" className="block text-xs font-mono text-slate-400 mb-1.5 tracking-wide">NAMA *</label>
+                <input
+                  id="cm-name" name="name" type="text" autoComplete="name" autoCapitalize="words" enterKeyHint="next"
+                  maxLength={NAME_MAX} required aria-invalid={!!errors.name} aria-describedby={errors.name ? 'cm-name-err' : undefined}
+                  value={form.name} onChange={setField('name')} placeholder="Nama Anda" className={field(errors.name)}
+                />
+                {errors.name && <p id="cm-name-err" role="alert" className="text-red-400 text-xs mt-1">{errors.name}</p>}
+              </div>
+
+              <div>
+                <label htmlFor="cm-message" className="block text-xs font-mono text-slate-400 mb-1.5 tracking-wide">KOMENTAR *</label>
                 <textarea
-                  id="contact-message" name="message" rows={isComment ? 4 : 5} maxLength={isComment ? COMMENT_MAX : 1000} required
-                  aria-invalid={!!errors.message} aria-describedby={errors.message ? 'contact-message-err' : undefined}
-                  value={form.message} onChange={setField('message')}
-                  placeholder={isComment ? 'Tulis komentar Anda...' : 'Tulis pesan Anda...'}
+                  id="cm-message" name="message" rows={3} maxLength={COMMENT_MAX} required
+                  aria-invalid={!!errors.message} aria-describedby={errors.message ? 'cm-message-err' : undefined}
+                  value={form.message} onChange={setField('message')} placeholder="Tulis komentar Anda..."
                   className={`${field(errors.message)} resize-none`}
                 />
                 <div className="flex items-start justify-between gap-3 mt-1">
                   <div className="min-h-[1rem]">
-                    {errors.message && <p id="contact-message-err" role="alert" className="text-red-400 text-xs">{errors.message}</p>}
+                    {errors.message && <p id="cm-message-err" role="alert" className="text-red-400 text-xs">{errors.message}</p>}
                   </div>
-                  {isComment && form.message.length > COMMENT_MAX - 80 && (
+                  {form.message.length > COMMENT_MAX - 80 && (
                     <p className="text-xs font-mono text-amber-400 shrink-0">{form.message.length}/{COMMENT_MAX}</p>
                   )}
                 </div>
@@ -267,14 +168,13 @@ export default function Contact() {
               </div>
 
               <SwipeToSend
-                key={mode}
                 onConfirm={send}
-                disabled={isComment && cooldown > 0}
+                disabled={cooldown > 0}
                 disabledLabel={`Tunggu ${Math.ceil(cooldown / 1000)} dtk untuk kirim lagi`}
-                ariaLabel={isComment ? 'Posting komentar' : 'Kirim pesan'}
-                label={isComment ? 'Geser untuk memposting komentar' : 'Geser untuk mengirim pesan'}
-                sendingLabel={isComment ? 'Memposting…' : 'Membuka email…'}
-                doneLabel={isComment ? 'Terposting!' : 'Email dibuka'}
+                ariaLabel="Posting komentar"
+                label="Geser untuk memposting"
+                sendingLabel="Memposting…"
+                doneLabel="Terposting!"
               />
 
               <AnimatePresence>
@@ -282,7 +182,7 @@ export default function Contact() {
                   <motion.div
                     initial={{ opacity: 0, y: -6 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0 }}
                     role={notice.type === 'error' ? 'alert' : 'status'}
-                    className={`flex items-start gap-2 rounded-lg px-3 py-2.5 text-sm border ${
+                    className={`flex items-start gap-2 rounded-lg px-3 py-2 text-sm border ${
                       notice.type === 'ok'
                         ? 'text-teal-300 bg-teal-500/10 border-teal-500/30'
                         : 'text-amber-300 bg-amber-500/10 border-amber-500/30'
@@ -296,21 +196,18 @@ export default function Contact() {
                 )}
               </AnimatePresence>
             </form>
-          </div>
-        </div>
 
-        {/* Daftar komentar publik */}
-        <div className="mt-16 pt-12 border-t border-slate-800" data-aos="fade-up">
-          <div className="flex items-center justify-between gap-3 mb-6">
-            <h3 className="font-display font-700 text-2xl text-slate-100 flex items-center gap-3">
-              <MessageSquare className="w-5 h-5 text-teal-400" aria-hidden="true" />
-              Komentar
-            </h3>
-            <span className="font-mono text-xs text-teal-400 glass px-2.5 py-1 rounded-full border border-teal-500/20">
-              {comments.length} komentar
-            </span>
+            {/* Daftar komentar: ringkas, scroll kalau banyak */}
+            <div className="glass rounded-xl border border-slate-700/30 p-4">
+              <div className="flex items-center justify-between gap-3 mb-3">
+                <h3 className="font-display font-600 text-base text-slate-100">Komentar</h3>
+                <span className="font-mono text-xs text-teal-400 px-2.5 py-0.5 rounded-full border border-teal-500/20">
+                  {comments.length}
+                </span>
+              </div>
+              <CommentList comments={comments} loading={loading} />
+            </div>
           </div>
-          <CommentList comments={comments} loading={loading} />
         </div>
       </div>
     </section>
