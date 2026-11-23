@@ -5,7 +5,18 @@ import { CERTIFICATIONS } from '../data/portfolio'
 import PdfThumb from './PdfThumb'
 import './neon.css'
 
-const platformCount = new Set(CERTIFICATIONS.map((c) => c.issuer)).size
+const BASE = import.meta.env.BASE_URL
+// Nama file di folder public/previews/ (di GitHub: public/previews/...) diubah jadi alamat lengkap.
+// Link lengkap (https://...) dibiarkan apa adanya.
+const asset = (name) => (/^https?:\/\//i.test(name) ? name : `${BASE}previews/${encodeURIComponent(name)}`)
+
+// Gambar kartu = `preview`. Yang dibuka saat kartu diklik = `file` (mis. PDF), kalau tidak ada maka gambar `preview` itu sendiri.
+// `link` (alamat luar) tetap didukung sebagai cadangan.
+function certSources(cert) {
+  const thumb = cert.preview ? asset(cert.preview) : null
+  const href = cert.file ? asset(cert.file) : thumb || cert.link || null
+  return { thumb, href }
+}
 const NEON = { teal: '#2DD4BF', amber: '#FBBF24' }
 const MAX_TOPICS = 4
 
@@ -13,14 +24,15 @@ function CertCard({ cert, offset, index, total, width, spacing, reduce, onSelect
   const abs = Math.abs(offset)
   const active = offset === 0
   const neon = NEON[cert.color] || NEON.teal
-  const Wrapper = active && cert.link ? 'a' : 'div'
+  const { thumb, href } = certSources(cert)
+  const Wrapper = active && href ? 'a' : 'div'
   const wrapperProps =
-    active && cert.link
+    active && href
       ? {
-          href: cert.link,
+          href,
           target: '_blank',
           rel: 'noreferrer',
-          'aria-label': `Buka sertifikat ${cert.title} dari ${cert.issuer} (PDF, tab baru)`,
+          'aria-label': `Buka sertifikat ${cert.title} dari ${cert.issuer} (tab baru)`,
           // klik setelah menggeser kartu tidak boleh membuka link
           onClick: (e) => wasDragged.current && e.preventDefault(),
           draggable: false,
@@ -57,7 +69,7 @@ function CertCard({ cert, offset, index, total, width, spacing, reduce, onSelect
       data-active={active}
     >
       <Wrapper {...wrapperProps} className="group flex flex-col h-full focus-visible:outline-offset-[-4px]">
-        <PdfThumb item={cert} emoji={cert.badge} label="SERTIFIKAT" cta="Lihat sertifikat" />
+        <PdfThumb src={thumb} title={cert.title} clickable={!!href} emoji={cert.badge} />
 
         <div className="p-5 flex flex-col flex-1">
           <div className="flex items-start justify-between gap-3">
@@ -97,9 +109,9 @@ function CertCard({ cert, offset, index, total, width, spacing, reduce, onSelect
             )}
           </div>
 
-          {active && cert.link && (
+          {active && href && (
             <p className="mt-auto pt-5 text-xs font-mono flex items-center gap-1.5" style={{ color: neon }}>
-              Lihat sertifikat (PDF) <ExternalLink className="w-3 h-3" aria-hidden="true" />
+              Lihat sertifikat <ExternalLink className="w-3 h-3" aria-hidden="true" />
             </p>
           )}
         </div>
@@ -249,26 +261,6 @@ export default function Certifications() {
         </div>
 
         <CertCarousel />
-
-        {/* Stats bar: angka diturunkan dari data */}
-        <div
-          data-aos="fade-up"
-          data-aos-delay="200"
-          className="mt-12 glass rounded-xl border border-teal-500/10 p-6 grid grid-cols-2 md:grid-cols-4 gap-6 text-center"
-        >
-          {[
-            { label: 'Total Sertifikat', value: String(CERTIFICATIONS.length), icon: '🏅' },
-            { label: 'Jam Pelatihan', value: '200+', icon: '⏱️' },
-            { label: 'Platform', value: String(platformCount), icon: '🖥️' },
-            { label: 'Tahun Belajar', value: '2+', icon: '📅' },
-          ].map(({ label, value, icon }) => (
-            <div key={label}>
-              <div className="text-2xl mb-1" aria-hidden="true">{icon}</div>
-              <div className="font-display font-700 text-2xl text-teal-400">{value}</div>
-              <div className="text-xs text-slate-400 mt-0.5">{label}</div>
-            </div>
-          ))}
-        </div>
       </div>
     </section>
   )
